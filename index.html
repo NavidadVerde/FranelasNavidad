@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
-  <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#991B1B" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Viste el Espíritu de la Navidad | Franelas Navideñas para Niños</title>
@@ -20,7 +20,7 @@
       background-color: #FAF7F5;
       color: #1F2937;
       overflow-x: hidden;
-      padding-bottom: var(--safe-bottom);
+      padding-bottom: calc(1.5rem + var(--safe-bottom));
       -webkit-tap-highlight-color: transparent;
     }
     .font-festive { font-family: 'Fredoka', cursive, sans-serif; }
@@ -35,8 +35,8 @@
       );
     }
     @media (max-width: 640px) { input, select, textarea { font-size: 16px !important; } }
-    .modal-sheet { max-height: 92dvh; padding-bottom: calc(1rem + var(--safe-bottom)); }
-    .drawer-full { height: 100dvh; padding-bottom: var(--safe-bottom); }
+    .modal-sheet { max-height: 92dvh; padding-bottom: calc(1.25rem + var(--safe-bottom)); }
+    .drawer-full { height: 100dvh; padding-bottom: calc(1rem + var(--safe-bottom)); }
   </style>
 </head>
 <body class="antialiased selection:bg-red-700 selection:text-white">
@@ -273,7 +273,7 @@
     </div>
   </section>
 
-  <section id="catalogo" class="max-w-7xl mx-auto px-3 sm:px-6 pt-4 pb-16">
+  <section id="catalogo" class="max-w-7xl mx-auto px-3 sm:px-6 pt-4 pb-24">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
       <div>
         <h2 class="font-festive text-2xl sm:text-3xl font-bold text-stone-900">Catálogo completo</h2>
@@ -296,7 +296,7 @@
     </div>
   </section>
 
-  <footer class="border-t border-stone-200 bg-white py-6 px-4 text-center text-xs text-stone-500 space-y-2">
+  <footer class="border-t border-stone-200 bg-white py-6 px-4 text-center text-xs text-stone-500 space-y-2 pb-16 sm:pb-6">
     <p class="font-bold text-stone-700">Viste el Espíritu de la Navidad · Franelas para niños Tallas 4 a 16 ($15)</p>
     <button onclick="toggleDiagnostics()" class="text-[11px] text-stone-400 hover:text-stone-700 underline">Verificar conexión de fotos</button>
     <div id="diagBox" class="hidden max-w-2xl mx-auto mt-3 p-4 rounded-2xl bg-stone-900 text-stone-100 text-left font-mono text-[11px] space-y-1.5 overflow-x-auto">
@@ -509,16 +509,23 @@
         if (!/^https?:\/\//i.test(clean)) {
           list.push(clean.startsWith("./") || clean.startsWith("/") ? clean : `./${clean}`);
         } else {
-          const driveMatch = clean.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|docs\.google\.com\/file\/d\/)([a-zA-Z0-9_-]{15,})/);
+          const driveMatch = clean.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=[^&]+&)?id=)|docs\.google\.com\/file\/d\/|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]{15,})/);
           if (driveMatch && driveMatch[1]) {
             const id = driveMatch[1];
-            list.push(`https://lh3.googleusercontent.com/d/${id}=w600`, `https://drive.google.com/thumbnail?id=${id}&sz=w600`);
+            // Orden optimizado para Chrome Android y navegadores móviles
+            list.push(
+              `https://drive.google.com/thumbnail?id=${id}&sz=w800`,
+              `https://lh3.googleusercontent.com/d/${id}=w800`,
+              `https://drive.google.com/uc?export=view&id=${id}`
+            );
           } else {
             list.push(clean);
           }
         }
       }
-      if (upper) list.push(`./${upper}.png`, `./${lower}.png`, `./${upper}.jpg`, `./${lower}.jpg`);
+      if (upper) {
+        list.push(`./${upper}.png`, `./${lower}.png`, `./${upper}.jpg`, `./${lower}.jpg`, `./${upper}.webp`);
+      }
       return [...new Set(list)];
     }
 
@@ -579,7 +586,6 @@
           diagRow1.textContent = `Fila 1 (${first.code}): ${candidates.join(" -> ")}`;
 
           const testImg = new Image();
-          testImg.referrerPolicy = "no-referrer";
           testImg.onload = () => { diagImgTest.textContent = `✅ "${candidates[0]}" cargada (${testImg.width}x${testImg.height}px).`; };
           testImg.onerror = () => { diagImgTest.textContent = `⚠️ Falló "${candidates[0]}", usando respaldo.`; };
           testImg.src = candidates[0];
@@ -612,7 +618,6 @@
 
       if (useSuggested) {
         switch (code) {
-          // --- ASOMADOS AGRANDADOS Y AL BORDE EXACTO ---
           case "A01": return { boxClass: "bottom-[5.6%] left-[18.2%] w-[47%] h-[44%]", imgAlign: "object-contain object-left-bottom" };
           case "A02": return { boxClass: "bottom-[5.6%] left-[18.2%] w-[45%] h-[32%]", imgAlign: "object-contain object-left-bottom" };
           case "A03": return { boxClass: "top-[28%] right-[19%] w-[33%] h-[21%]", imgAlign: "object-contain object-bottom" };
@@ -699,13 +704,12 @@
       const shirtFill = color === "red" ? "#B91C1C" : "#FFFFFF";
       const shirtStroke = color === "red" ? "#7F1D1D" : "#E5E7EB";
       const collarFill = color === "red" ? "#991B1B" : "#F3F4F6";
-      const resolvedPlacement = (!placementOverride || placementOverride === "suggested") ? item.placement : placementOverride;
       const layout = getDesignLayout(item, placementOverride);
       const candidates = getImageCandidates(item.imageUrl, item.code);
       const candidatesAttr = escapeHTML(JSON.stringify(candidates));
 
       const artworkHTML = candidates.length > 0
-        ? `<img src="${candidates[0]}" alt="${escapeHTML(item.name)}" referrerpolicy="no-referrer"
+        ? `<img src="${candidates[0]}" alt="${escapeHTML(item.name)}"
              data-idx="0" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)"
              class="w-full h-full ${layout.imgAlign} select-none pointer-events-none" />
            <div style="display:none" class="w-full h-full">${getMotifFallbackSVG(item)}</div>`
@@ -821,7 +825,7 @@
         const candidates = getImageCandidates(item.imageUrl, item.code);
         const candidatesAttr = escapeHTML(JSON.stringify(candidates));
         const thumb = candidates.length > 0
-          ? `<img src="${candidates[0]}" alt="${escapeHTML(item.name)}" referrerpolicy="no-referrer" data-idx="0" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
+          ? `<img src="${candidates[0]}" alt="${escapeHTML(item.name)}" data-idx="0" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
           : `<div class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`;
         return `<button onclick="selectStudioMotif('${item.code}')" class="p-2 rounded-xl border-2 text-center transition flex flex-col items-center justify-between gap-1 ${selected ? "border-red-700 bg-red-50/50" : "border-stone-200 bg-white hover:border-stone-300"}">${thumb}<span class="text-[11px] font-extrabold text-stone-900">${item.code}</span><span class="text-[10px] text-stone-500 line-clamp-1 leading-tight">${item.name}</span></button>`;
       }).join("");
@@ -1079,7 +1083,7 @@
         return `${idx + 1}. *${item.code}* (${item.name}) - ${colorText} talla *${item.size}* (x${item.qty})${posText}${nameText} = *$${item.price * item.qty}*`;
       });
       const total = cart.reduce((acc, c) => acc + c.qty * c.price, 0);
-      const message = `¡Hola! Quiero hacer este pedido de Franelas Navideñas: \n\n${lines.join("\n")}\n\n Total a pagar: $${total}\n¿Me confirman disponibilidad y datos de pago?`;
+      const message = `🎄 *¡Hola! Quiero hacer este pedido de Franelas Navideñas:*\n\n${lines.join("\n")}\n\n💰 *Total a pagar: $${total}*\n¿Me confirman disponibilidad y datos de pago?`;
       window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     }
 

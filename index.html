@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#991B1B" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -33,11 +34,9 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .shirt-shadow { filter: drop-shadow(0 14px 24px rgba(17, 24, 39, 0.14)); }
     .shirt-card-shadow { filter: drop-shadow(0 8px 14px rgba(17, 24, 39, 0.09)); }
-    /* Evita zoom automático en inputs al tocar en iOS Safari */
     @media (max-width: 640px) {
       input, select, textarea { font-size: 16px !important; }
     }
-    /* Altura dinámica segura para barras de navegación móviles (iOS/Android) */
     .modal-sheet {
       max-height: 92dvh;
       padding-bottom: calc(1rem + var(--safe-bottom));
@@ -391,12 +390,16 @@
     </div>
   </section>
 
-  <!-- Minimal Footer with Discreet Sheets Config -->
-  <footer class="border-t border-stone-200 bg-white py-6 px-4 text-center text-xs text-stone-500">
+  <!-- Minimal Footer -->
+  <footer class="border-t border-stone-200 bg-white py-6 px-4 text-center text-xs text-stone-500 space-y-2">
     <p class="font-bold text-stone-700">Viste el Espíritu de la Navidad · Franelas para niños Tallas 4 a 16 ($15)</p>
-    <div class="mt-2 flex items-center justify-center gap-3">
-      <span id="sheetStatusText" class="text-[11px] text-emerald-700 font-semibold">● Catálogo sincronizado</span>
-      <button onclick="openSheetsModal()" class="text-[11px] underline text-stone-400 hover:text-stone-700">Configurar catálogo Sheets</button>
+    <button onclick="toggleDiagnostics()" class="text-[11px] text-stone-400 hover:text-stone-700 underline">
+      Verificar conexión de fotos
+    </button>
+    <div id="diagBox" class="hidden max-w-2xl mx-auto mt-3 p-4 rounded-2xl bg-stone-900 text-stone-100 text-left font-mono text-[11px] space-y-1.5 overflow-x-auto">
+      <p id="diagStatus">Estado: Conectando con Apps Script...</p>
+      <p id="diagRow1">Fila A01: ...</p>
+      <p id="diagImgTest">Prueba imagen A01: ...</p>
     </div>
   </footer>
 
@@ -502,29 +505,11 @@
     </div>
   </div>
 
-  <!-- Google Sheets Config Modal -->
-  <div id="sheetsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-    <div class="bg-white w-full max-w-lg rounded-3xl p-5 sm:p-6 shadow-2xl border border-stone-200 space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="font-festive text-lg font-bold text-stone-900">Conexión Google Sheets (CSV)</h3>
-        <button onclick="closeSheetsModal()" class="w-8 h-8 rounded-full bg-stone-100 text-stone-600 font-bold">✕</button>
-      </div>
-      <p class="text-xs text-stone-600">
-        Tu catálogo está conectado a tu hoja pública. Si deseas probar otro enlace CSV temporalmente o recargar los cambios que acabas de hacer en Google Sheets, usa las opciones de abajo:
-      </p>
-      <input id="sheetsUrlInput" type="url" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs font-mono" />
-      <div class="flex flex-wrap gap-2 justify-end">
-        <button onclick="resetSheetsUrl()" class="px-4 py-2.5 rounded-xl border border-stone-200 text-xs font-bold text-stone-700">Restaurar enlace original</button>
-        <button onclick="saveAndReloadSheets()" class="px-4 py-2.5 rounded-xl bg-red-700 text-white text-xs font-bold">Sincronizar ahora</button>
-      </div>
-    </div>
-  </div>
-
   <script>
     // =========================================================================
-    // CONFIGURACIÓN DE GOOGLE SHEETS Y WHATSAPP
+    // CONFIGURACIÓN DE GOOGLE APPS SCRIPT Y WHATSAPP
     // =========================================================================
-    const DEFAULT_GOOGLE_SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc43buYr2mXeYxme2KBAJs1wxuL8LMcI5a51xMyWOifXOdOKzojdHg_6OjC78hiw/pub?gid=402438020&single=true&output=csv";
+    const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTPOfNntDoIVgWDoWgvje1qvH-JwUrgK_aFBay7CyEGrBMzAH8h_bqKlKXnyHgFQVb/exec";
     const WHATSAPP_PHONE = "584242074584";
     const SIZES = ["4", "6", "8", "10", "12", "14", "16"];
 
@@ -537,7 +522,6 @@
       { id: "bottom-center", label: "Centro inferior" }
     ];
 
-    // Default 52 Catalog Items (fallback while Google Sheets loads or if an image URL is empty)
     const DEFAULT_CATALOG = [
       { code: "A01", name: "Asomado en la esquina", family: "Asomados", placement: "bottom-left", price: 15, imageUrl: "" },
       { code: "A02", name: "Mirada curiosa", family: "Asomados", placement: "bottom-left", price: 15, imageUrl: "" },
@@ -601,7 +585,6 @@
     let searchQuery = "";
     let cart = [];
 
-    // Studio Onboarding State
     let studio = {
       step: 1,
       color: "white",
@@ -614,7 +597,6 @@
       size: "8"
     };
 
-    // Modal State
     let modalState = {
       code: "A01",
       color: "white",
@@ -623,13 +605,29 @@
       childName: ""
     };
 
+    function toggleDiagnostics() {
+      document.getElementById("diagBox").classList.toggle("hidden");
+    }
+
     // =========================================================================
-    // GOOGLE DRIVE & IMAGE URL CONVERTER
+    // RESOLVER DE IMÁGENES (GITHUB LOCAL, GOOGLE DRIVE O URL EXTERNA)
     // =========================================================================
-    function normalizeImageUrl(rawUrl) {
-      if (!rawUrl) return { primary: "", fallback: "" };
-      const url = rawUrl.trim();
-      const driveMatch = url.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|docs\.google\.com\/file\/d\/)([a-zA-Z0-9_-]{15,})/);
+    function normalizeImageUrl(rawUrl, code) {
+      const clean = (rawUrl || "").trim();
+
+      if (!clean) {
+        return {
+          primary: code ? `./${code}.png` : "",
+          fallback: code ? `./${code}.jpg` : ""
+        };
+      }
+
+      if (!/^https?:\/\//i.test(clean)) {
+        const relativePath = clean.startsWith("./") || clean.startsWith("/") ? clean : `./${clean}`;
+        return { primary: relativePath, fallback: "" };
+      }
+
+      const driveMatch = clean.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|docs\.google\.com\/file\/d\/)([a-zA-Z0-9_-]{15,})/);
       if (driveMatch && driveMatch[1]) {
         const id = driveMatch[1];
         return {
@@ -637,46 +635,8 @@
           fallback: `https://drive.google.com/thumbnail?id=${id}&sz=w600`
         };
       }
-      return { primary: url, fallback: "" };
-    }
 
-    // =========================================================================
-    // CSV PARSER & LIVE SYNC FROM GOOGLE SHEETS
-    // =========================================================================
-    function parseCSV(text) {
-      const rows = [];
-      let row = [];
-      let current = "";
-      let inQuotes = false;
-
-      for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        const next = text[i + 1];
-        if (char === '"') {
-          if (inQuotes && next === '"') {
-            current += '"';
-            i++;
-          } else {
-            inQuotes = !inQuotes;
-          }
-        } else if (char === "," && !inQuotes) {
-          row.push(current.trim());
-          current = "";
-        } else if ((char === "\n" || (char === "\r" && next === "\n")) && !inQuotes) {
-          if (char === "\r") i++;
-          row.push(current.trim());
-          if (row.some(cell => cell !== "")) rows.push(row);
-          row = [];
-          current = "";
-        } else {
-          current += char;
-        }
-      }
-      if (current.length > 0 || row.length > 0) {
-        row.push(current.trim());
-        if (row.some(cell => cell !== "")) rows.push(row);
-      }
-      return rows;
+      return { primary: clean, fallback: "" };
     }
 
     function normalizeFamily(raw) {
@@ -687,67 +647,69 @@
       return "Asomados";
     }
 
-    async function loadGoogleSheetCatalog(customUrl) {
-      const csvUrl = customUrl || localStorage.getItem("custom_sheets_csv_url") || DEFAULT_GOOGLE_SHEETS_CSV_URL;
-      const statusEl = document.getElementById("sheetStatusText");
+    // =========================================================================
+    // SINCRONIZACIÓN DIRECTA DESDE GOOGLE APPS SCRIPT (JSON)
+    // =========================================================================
+    async function loadCatalogFromAppsScript() {
+      const diagStatus = document.getElementById("diagStatus");
+      const diagRow1 = document.getElementById("diagRow1");
+      const diagImgTest = document.getElementById("diagImgTest");
 
       try {
-        if (statusEl) statusEl.textContent = "● Sincronizando catálogo...";
-        const res = await fetch(csvUrl, { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const csvText = await res.text();
-        const rows = parseCSV(csvText);
-        if (rows.length < 2) throw new Error("CSV vacío");
+        const url = `${GOOGLE_APPS_SCRIPT_URL}?t=${Date.now()}`;
+        const res = await fetch(url, { redirect: "follow" });
+        if (!res.ok) throw new Error("Error HTTP " + res.status);
 
-        const headers = rows[0].map(h => h.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
-        const idxCode = headers.indexOf("codigo");
-        const idxName = headers.indexOf("nombre");
-        const idxFam = headers.indexOf("familia");
-        const idxPos = headers.indexOf("ubicacion");
-        const idxPrice = headers.indexOf("precio");
-        const idxActive = headers.indexOf("activo");
-        const idxImg = headers.indexOf("imagen_url");
+        const data = await res.json();
+        if (!Array.isArray(data) || data.length === 0) {
+          throw new Error("Apps Script devolvió una lista vacía.");
+        }
 
         const parsedItems = [];
-        for (let i = 1; i < rows.length; i++) {
-          const r = rows[i];
-          const code = (r[idxCode] || "").toUpperCase().trim();
+        for (const row of data) {
+          const code = (row.codigo || "").toUpperCase().trim();
           if (!code) continue;
 
-          const activeVal = (r[idxActive] || "si").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+          const activeVal = (row.activo || "si").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
           if (activeVal === "no" || activeVal === "false" || activeVal === "0") continue;
 
           const fallbackItem = DEFAULT_CATALOG.find(d => d.code === code);
-          const name = (r[idxName] || (fallbackItem ? fallbackItem.name : code)).trim();
-          const family = idxFam >= 0 && r[idxFam] ? normalizeFamily(r[idxFam]) : (fallbackItem ? fallbackItem.family : "Asomados");
-          const placement = idxPos >= 0 && r[idxPos] ? r[idxPos].trim() : (fallbackItem ? fallbackItem.placement : "chest-left");
-          const priceNum = parseFloat((r[idxPrice] || "15").replace(/[^0-9.]/g, "")) || 15;
-          const imageUrl = idxImg >= 0 ? (r[idxImg] || "").trim() : "";
+          const name = (row.nombre || (fallbackItem ? fallbackItem.name : code)).trim();
+          const family = row.familia ? normalizeFamily(row.familia) : (fallbackItem ? fallbackItem.family : "Asomados");
+          const placement = row.ubicacion ? row.ubicacion.trim() : (fallbackItem ? fallbackItem.placement : "chest-left");
+          const priceNum = parseFloat(String(row.precio || "15").replace(/[^0-9.]/g, "")) || 15;
+          const imageUrl = (row.imagen_url || "").trim();
 
           parsedItems.push({ code, name, family, placement, price: priceNum, imageUrl });
         }
 
+        diagStatus.textContent = `✅ Apps Script conectado (${parsedItems.length} productos recibidos).`;
         if (parsedItems.length > 0) {
+          const first = parsedItems[0];
+          const resolved = normalizeImageUrl(first.imageUrl, first.code);
+          diagRow1.textContent = `Fila 1 (${first.code}): imagen_url = "${first.imageUrl}" -> Ruta usada: "${resolved.primary}"`;
+
+          const testImg = new Image();
+          testImg.referrerPolicy = "no-referrer";
+          testImg.onload = () => {
+            diagImgTest.textContent = `✅ Imagen "${resolved.primary}" cargada con éxito (${testImg.width}x${testImg.height}px).`;
+          };
+          testImg.onerror = () => {
+            diagImgTest.textContent = `❌ ERROR cargando "${resolved.primary}". Verifica que el archivo exista con ese nombre exacto en GitHub o que el enlace sea público.`;
+          };
+          testImg.src = resolved.primary;
+
           catalog = parsedItems;
           if (!catalog.some(item => item.code === studio.code)) {
             studio.code = catalog[0].code;
             studio.family = catalog[0].family;
           }
-          const withPhotos = catalog.filter(i => i.imageUrl).length;
-          if (statusEl) {
-            statusEl.textContent = withPhotos > 0
-              ? `● Catálogo en vivo (${withPhotos} fotos cargadas)`
-              : `● Catálogo conectado (${catalog.length} diseños)`;
-            statusEl.className = "text-[11px] text-emerald-700 font-semibold";
-          }
           renderAll();
         }
       } catch (err) {
         console.warn("Usando catálogo local de respaldo:", err);
-        if (statusEl) {
-          statusEl.textContent = "● Modo catálogo local";
-          statusEl.className = "text-[11px] text-amber-700 font-semibold";
-        }
+        diagStatus.textContent = `❌ Error leyendo Apps Script: ${err.message}`;
+        diagRow1.textContent = "Verifica que en Apps Script elegiste 'Quién tiene acceso: Cualquier usuario'.";
       }
     }
 
@@ -818,7 +780,7 @@
           ? "top-[53%] right-[23%] text-center"
           : "top-[52%] left-1/2 -translate-x-1/2 text-center";
       }
-      return "top-[29%] left-[23%] text-left"; // chest-right
+      return "top-[29%] left-[23%] text-left";
     }
 
     function renderShirtMockup(item, color, placementOverride, childName = "", namePos = "chest-right", nameFont = "festive", isLarge = false) {
@@ -827,10 +789,10 @@
       const collarFill = color === "red" ? "#991B1B" : "#F3F4F6";
       const resolvedPlacement = (!placementOverride || placementOverride === "suggested") ? item.placement : placementOverride;
       const posClass = getPlacementClasses(resolvedPlacement);
-      const urls = normalizeImageUrl(item.imageUrl);
+      const urls = normalizeImageUrl(item.imageUrl, item.code);
 
       const artworkHTML = urls.primary
-        ? `<img src="${urls.primary}" alt="${item.name}"
+        ? `<img src="${urls.primary}" alt="${item.name}" referrerpolicy="no-referrer"
              onerror="if(this.dataset.triedFallback!=='1' && '${urls.fallback}'){this.dataset.triedFallback='1';this.src='${urls.fallback}';}else{this.style.display='none';this.nextElementSibling.style.display='block';}"
              class="w-full h-full object-contain select-none pointer-events-none" />
            <div style="display:none" class="w-full h-full">${getMotifFallbackSVG(item)}</div>`
@@ -981,9 +943,9 @@
       const filtered = catalog.filter(d => d.family === studio.family);
       grid.innerHTML = filtered.map(item => {
         const selected = item.code === studio.code;
-        const urls = normalizeImageUrl(item.imageUrl);
+        const urls = normalizeImageUrl(item.imageUrl, item.code);
         const thumb = urls.primary
-          ? `<img src="${urls.primary}" alt="${item.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
+          ? `<img src="${urls.primary}" alt="${item.name}" referrerpolicy="no-referrer" onerror="if(this.dataset.triedFallback!=='1' && '${urls.fallback}'){this.dataset.triedFallback='1';this.src='${urls.fallback}';}else{this.style.display='none';this.nextElementSibling.style.display='block';}" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
           : `<div class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`;
 
         return `
@@ -1001,14 +963,12 @@
       const item = catalog.find(d => d.code === studio.code) || catalog[0];
       if (!item) return;
 
-      // Render large shirt preview
       document.getElementById("studioCanvas").innerHTML = renderShirtMockup(
         item, studio.color, studio.placement, studio.childName, studio.namePos, studio.nameFont, true
       );
 
       document.getElementById("studioMotifBadge").textContent = `${item.code} · ${item.name}`;
 
-      // Render placement buttons
       document.getElementById("studioPlacementGrid").innerHTML = PLACEMENT_OPTIONS.map(opt => {
         const active = studio.placement === opt.id;
         return `
@@ -1019,7 +979,6 @@
         `;
       }).join("");
 
-      // Render size grid
       document.getElementById("studioSizeGrid").innerHTML = SIZES.map(sz => {
         const active = studio.size === sz;
         return `
@@ -1369,38 +1328,6 @@
     }
 
     // =========================================================================
-    // GOOGLE SHEETS CONFIG MODAL
-    // =========================================================================
-    function openSheetsModal() {
-      document.getElementById("sheetsUrlInput").value = localStorage.getItem("custom_sheets_csv_url") || DEFAULT_GOOGLE_SHEETS_CSV_URL;
-      const m = document.getElementById("sheetsModal");
-      m.classList.remove("hidden");
-      m.classList.add("flex");
-    }
-
-    function closeSheetsModal() {
-      const m = document.getElementById("sheetsModal");
-      m.classList.add("hidden");
-      m.classList.remove("flex");
-    }
-
-    function saveAndReloadSheets() {
-      const val = document.getElementById("sheetsUrlInput").value.trim();
-      if (val) {
-        localStorage.setItem("custom_sheets_csv_url", val);
-        loadGoogleSheetCatalog(val);
-      }
-      closeSheetsModal();
-    }
-
-    function resetSheetsUrl() {
-      localStorage.removeItem("custom_sheets_csv_url");
-      document.getElementById("sheetsUrlInput").value = DEFAULT_GOOGLE_SHEETS_CSV_URL;
-      loadGoogleSheetCatalog(DEFAULT_GOOGLE_SHEETS_CSV_URL);
-      closeSheetsModal();
-    }
-
-    // =========================================================================
     // INIT & EVENT LISTENERS
     // =========================================================================
     function renderAll() {
@@ -1434,7 +1361,7 @@
 
     // Boot
     renderAll();
-    loadGoogleSheetCatalog();
+    loadCatalogFromAppsScript();
   </script>
 </body>
 </html>

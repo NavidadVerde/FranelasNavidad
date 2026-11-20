@@ -1079,7 +1079,7 @@
         return `${idx + 1}. *${item.code}* (${item.name}) - ${colorText} talla *${item.size}* (x${item.qty})${posText}${nameText} = *$${item.price * item.qty}*`;
       });
       const total = cart.reduce((acc, c) => acc + c.qty * c.price, 0);
-      const message = `🎄 ¡Hola! Quiero hacer este pedido de Franelas Navideñas: \n\n${lines.join("\n")}\n\n💰 Total a pagar: $${total}\n¿Me confirman disponibilidad y datos de pago?`;
+      const message = `¡Hola! Quiero hacer este pedido de Franelas Navideñas: \n\n${lines.join("\n")}\n\n Total a pagar: $${total}\n¿Me confirman disponibilidad y datos de pago?`;
       window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     }
 

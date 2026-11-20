@@ -29,23 +29,15 @@
       -webkit-tap-highlight-color: transparent;
     }
     .font-festive { font-family: 'Fredoka', cursive, sans-serif; }
-    .font-name-stamp {
-      font-family: 'Fredoka', cursive, sans-serif;
-      color: #FFFFFF;
-      text-shadow:
-        0 1.5px 0 rgba(17, 24, 39, 0.85),
-        0 -1px 0 rgba(17, 24, 39, 0.65),
-        1px 0 0 rgba(17, 24, 39, 0.65),
-        -1px 0 0 rgba(17, 24, 39, 0.65),
-        0 3px 8px rgba(0, 0, 0, 0.45);
-    }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .shirt-shadow { filter: drop-shadow(0 14px 24px rgba(17, 24, 39, 0.14)); }
     .shirt-card-shadow { filter: drop-shadow(0 8px 14px rgba(17, 24, 39, 0.09)); }
+    /* Evita zoom automático en inputs al tocar en iOS Safari */
     @media (max-width: 640px) {
       input, select, textarea { font-size: 16px !important; }
     }
+    /* Altura dinámica segura para barras de navegación móviles (iOS/Android) */
     .modal-sheet {
       max-height: 92dvh;
       padding-bottom: calc(1rem + var(--safe-bottom));
@@ -74,7 +66,7 @@
         </div>
       </a>
 
-      <!-- Search Bar (Desktop/Tablet) -->
+      <!-- Search Bar -->
       <div class="relative flex-1 max-w-md hidden md:block">
         <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
@@ -269,24 +261,24 @@
             <div id="studioPanel3" class="studio-panel hidden space-y-3.5">
               <div>
                 <span class="text-xs font-extrabold uppercase tracking-wider text-red-700">Paso 3</span>
-                <h3 class="font-festive text-xl font-bold text-stone-900">Ubicación del diseño</h3>
-                <p class="text-xs sm:text-sm text-stone-500">El espacio elegido quedará reservado para el muñeco.</p>
+                <h3 class="font-festive text-xl font-bold text-stone-900">Ubicación del estampado</h3>
+                <p class="text-xs sm:text-sm text-stone-500">Usa la ubicación sugerida del catálogo o cámbiala a tu gusto.</p>
               </div>
               <div id="studioPlacementGrid" class="grid grid-cols-2 gap-2 pt-1">
                 <!-- Populated by JS -->
               </div>
             </div>
 
-            <!-- STEP 4: OPTIONAL CHILD NAME (WHITE ONLY, SINGLE FONT, MUTUALLY EXCLUSIVE ZONES) -->
+            <!-- STEP 4: OPTIONAL CHILD NAME -->
             <div id="studioPanel4" class="studio-panel hidden space-y-3.5">
               <div>
                 <span class="text-xs font-extrabold uppercase tracking-wider text-red-700">Paso 4 · Opcional</span>
                 <h3 class="font-festive text-xl font-bold text-stone-900">Personaliza con el nombre del niño/a</h3>
-                <p class="text-xs sm:text-sm text-stone-500">Se estampa en letra blanca festiva en cualquiera de los espacios disponibles.</p>
+                <p class="text-xs sm:text-sm text-stone-500">Déjalo en blanco si prefieres la franela solo con el diseño.</p>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-stone-700 mb-1.5">Nombre a estampar (déjalo vacío si no deseas nombre)</label>
+                <label class="block text-xs font-bold text-stone-700 mb-1.5">Nombre a estampar (máx. 16 letras)</label>
                 <div class="relative">
                   <input id="studioChildName" type="text" maxlength="16" placeholder="Ej. Mateo, Sofía, Lucas..."
                     oninput="setStudioName(this.value)"
@@ -295,13 +287,24 @@
                 </div>
               </div>
 
-              <div>
-                <div class="flex items-center justify-between mb-1.5">
-                  <label class="text-xs font-bold text-stone-700">Espacio para el nombre (excluye donde está el dibujo)</label>
-                  <span class="text-[11px] font-semibold text-stone-500">Color: Blanco</span>
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-xs font-bold text-stone-700 mb-1.5">Posición del nombre</label>
+                  <select id="studioNamePos" onchange="setStudioNamePos(this.value)"
+                    class="w-full px-3 py-2.5 rounded-xl border border-stone-300 text-xs font-bold bg-white focus:outline-none focus:border-red-700">
+                    <option value="chest-right">Pecho derecho</option>
+                    <option value="center-top">Centro arriba</option>
+                    <option value="bottom-opposite">Inferior opuesto</option>
+                    <option value="under-motif">Debajo del motivo</option>
+                  </select>
                 </div>
-                <div id="studioNamePositionGrid" class="grid grid-cols-2 gap-2">
-                  <!-- Populated by JS with all zones except motif zone -->
+                <div>
+                  <label class="block text-xs font-bold text-stone-700 mb-1.5">Estilo de letra</label>
+                  <select id="studioNameFont" onchange="setStudioNameFont(this.value)"
+                    class="w-full px-3 py-2.5 rounded-xl border border-stone-300 text-xs font-bold bg-white focus:outline-none focus:border-red-700">
+                    <option value="festive">Navideña redondeada</option>
+                    <option value="clean">Moderna limpia</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -388,12 +391,16 @@
     </div>
   </section>
 
-  <!-- Minimal Footer -->
+  <!-- Minimal Footer with Discreet Sheets Config -->
   <footer class="border-t border-stone-200 bg-white py-6 px-4 text-center text-xs text-stone-500">
     <p class="font-bold text-stone-700">Viste el Espíritu de la Navidad · Franelas para niños Tallas 4 a 16 ($15)</p>
+    <div class="mt-2 flex items-center justify-center gap-3">
+      <span id="sheetStatusText" class="text-[11px] text-emerald-700 font-semibold">● Catálogo sincronizado</span>
+      <button onclick="openSheetsModal()" class="text-[11px] underline text-stone-400 hover:text-stone-700">Configurar catálogo Sheets</button>
+    </div>
   </footer>
 
-  <!-- Quick Customize Modal -->
+  <!-- Quick Customize Modal (Bottom Sheet on Mobile) -->
   <div id="productModal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4">
     <div class="modal-sheet bg-white w-full max-w-2xl rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-y-auto border border-stone-200">
       <div class="sticky top-0 z-10 bg-white/95 backdrop-blur-xs px-5 py-3.5 border-b border-stone-100 flex items-center justify-between">
@@ -408,4 +415,1026 @@
         <!-- Preview -->
         <div class="bg-stone-100 rounded-2xl p-4 flex flex-col items-center justify-center">
           <div id="modalShirtPreview" class="w-48 sm:w-56 aspect-[4/5] relative flex items-center justify-center"></div>
-          <span id="modalPriceTag" class="mt
+          <span id="modalPriceTag" class="mt-2 font-festive text-xl font-bold text-red-800">$15</span>
+        </div>
+
+        <!-- Options -->
+        <div class="space-y-4">
+          <!-- Color -->
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-stone-500 mb-1.5">1. Color de franela</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setModalColor('white')" id="modalColorWhite" class="py-2.5 min-h-[42px] rounded-xl border-2 border-red-700 bg-red-50/40 text-xs font-bold flex items-center justify-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-full bg-white border border-stone-300"></span> Blanca
+              </button>
+              <button onclick="setModalColor('red')" id="modalColorRed" class="py-2.5 min-h-[42px] rounded-xl border-2 border-stone-200 text-xs font-bold flex items-center justify-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-full bg-red-700"></span> Roja
+              </button>
+            </div>
+          </div>
+
+          <!-- Size -->
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-stone-500 mb-1.5">2. Talla (4 a 16)</label>
+            <div id="modalSizeGrid" class="grid grid-cols-4 gap-1.5"></div>
+          </div>
+
+          <!-- Placement -->
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-stone-500 mb-1.5">3. Ubicación del estampado</label>
+            <select id="modalPlacementSelect" onchange="setModalPlacement(this.value)"
+              class="w-full px-3 py-2.5 rounded-xl border border-stone-300 text-xs font-bold bg-white focus:outline-none focus:border-red-700">
+              <option value="suggested">Sugerida del catálogo</option>
+              <option value="chest-left">Pecho izquierdo (bolsillo)</option>
+              <option value="center">Centro pecho</option>
+              <option value="bottom-left">Esquina inferior izquierda</option>
+              <option value="bottom-right">Esquina inferior derecha</option>
+              <option value="bottom-center">Centro inferior</option>
+            </select>
+          </div>
+
+          <!-- Optional Name -->
+          <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200/80 space-y-2">
+            <label class="block text-xs font-extrabold text-stone-700">4. Nombre del niño/a (opcional)</label>
+            <input id="modalChildName" type="text" maxlength="16" placeholder="Escribe un nombre..."
+              oninput="setModalName(this.value)"
+              class="w-full px-3 py-2 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:border-red-700" />
+          </div>
+
+          <button onclick="addModalToCart()"
+            class="w-full py-3.5 min-h-[48px] rounded-2xl bg-red-700 hover:bg-red-800 active:scale-95 text-white font-extrabold text-sm shadow-md transition">
+            + Agregar al pedido ($15)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 hidden justify-end bg-black/60 backdrop-blur-xs">
+    <div class="drawer-full bg-white w-full max-w-md flex flex-col shadow-2xl">
+      <div class="px-5 py-4 border-b border-stone-200 flex items-center justify-between bg-stone-50" style="padding-top: calc(1rem + var(--safe-top));">
+        <div>
+          <h3 class="font-festive text-xl font-bold text-stone-900">Tu Pedido Navideño</h3>
+          <p class="text-xs text-stone-500">Envío directo por WhatsApp</p>
+        </div>
+        <button onclick="toggleCart(false)" class="w-9 h-9 rounded-full bg-white border border-stone-200 flex items-center justify-center text-stone-700 font-bold">✕</button>
+      </div>
+
+      <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
+        <!-- Cart items rendered here -->
+      </div>
+
+      <div class="p-4 border-t border-stone-200 bg-stone-50 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-bold text-stone-600">Total estimado:</span>
+          <span id="cartTotalAmount" class="font-festive text-2xl font-bold text-red-800">$0</span>
+        </div>
+
+        <button id="whatsappOrderBtn" onclick="sendWhatsAppOrder()"
+          class="w-full py-3.5 min-h-[50px] rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 transition disabled:opacity-40 disabled:pointer-events-none">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+          </svg>
+          <span>Pedir por WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Sheets Config Modal -->
+  <div id="sheetsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl p-5 sm:p-6 shadow-2xl border border-stone-200 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-festive text-lg font-bold text-stone-900">Conexión Google Sheets (CSV)</h3>
+        <button onclick="closeSheetsModal()" class="w-8 h-8 rounded-full bg-stone-100 text-stone-600 font-bold">✕</button>
+      </div>
+      <p class="text-xs text-stone-600">
+        Tu catálogo está conectado a tu hoja pública. Si deseas probar otro enlace CSV temporalmente o recargar los cambios que acabas de hacer en Google Sheets, usa las opciones de abajo:
+      </p>
+      <input id="sheetsUrlInput" type="url" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-xs font-mono" />
+      <div class="flex flex-wrap gap-2 justify-end">
+        <button onclick="resetSheetsUrl()" class="px-4 py-2.5 rounded-xl border border-stone-200 text-xs font-bold text-stone-700">Restaurar enlace original</button>
+        <button onclick="saveAndReloadSheets()" class="px-4 py-2.5 rounded-xl bg-red-700 text-white text-xs font-bold">Sincronizar ahora</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // CONFIGURACIÓN DE GOOGLE SHEETS Y WHATSAPP
+    // =========================================================================
+    const DEFAULT_GOOGLE_SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc43buYr2mXeYxme2KBAJs1wxuL8LMcI5a51xMyWOifXOdOKzojdHg_6OjC78hiw/pub?gid=402438020&single=true&output=csv";
+    const WHATSAPP_PHONE = "584242074584";
+    const SIZES = ["4", "6", "8", "10", "12", "14", "16"];
+
+    const PLACEMENT_OPTIONS = [
+      { id: "suggested", label: "Sugerida del catálogo" },
+      { id: "chest-left", label: "Pecho izq. (bolsillo)" },
+      { id: "center", label: "Centro pecho" },
+      { id: "bottom-left", label: "Esquina inf. izq." },
+      { id: "bottom-right", label: "Esquina inf. der." },
+      { id: "bottom-center", label: "Centro inferior" }
+    ];
+
+    // Default 52 Catalog Items (fallback while Google Sheets loads or if an image URL is empty)
+    const DEFAULT_CATALOG = [
+      { code: "A01", name: "Asomado en la esquina", family: "Asomados", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "A02", name: "Mirada curiosa", family: "Asomados", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "A03", name: "Santa en el bolsillo", family: "Asomados", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "A04", name: "Escondido en la esquina", family: "Asomados", placement: "bottom-right", price: 15, imageUrl: "" },
+      { code: "A05", name: "Ojos de Navidad", family: "Asomados", placement: "bottom-center", price: 15, imageUrl: "" },
+      { code: "A06", name: "Santa en el borde", family: "Asomados", placement: "bottom-center", price: 15, imageUrl: "" },
+      { code: "A07", name: "Saludo de esquina", family: "Asomados", placement: "bottom-right", price: 15, imageUrl: "" },
+      { code: "A08", name: "Santa sentado", family: "Asomados", placement: "bottom-right", price: 15, imageUrl: "" },
+      { code: "A09", name: "Santa tímido", family: "Asomados", placement: "side-left", price: 15, imageUrl: "" },
+      { code: "A10", name: "Asomado al costado", family: "Asomados", placement: "side-right", price: 15, imageUrl: "" },
+      { code: "A11", name: "Regalo escondido", family: "Asomados", placement: "bottom-center", price: 15, imageUrl: "" },
+      { code: "A12", name: "Saco de regalos", family: "Asomados", placement: "bottom-center", price: 15, imageUrl: "" },
+      { code: "A13", name: "El gran regalo", family: "Asomados", placement: "bottom-center", price: 15, imageUrl: "" },
+      { code: "A14", name: "Bastón de caramelo", family: "Asomados", placement: "side-right", price: 15, imageUrl: "" },
+      { code: "A15", name: "La media de Navidad", family: "Asomados", placement: "side-right", price: 15, imageUrl: "" },
+      { code: "A16", name: "Santa vigilante", family: "Asomados", placement: "side-left", price: 15, imageUrl: "" },
+
+      { code: "C01", name: "Bola de nieve", family: "Clasicos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "C02", name: "Paseo de regalos", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C03", name: "Farol de estrellas", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C04", name: "Sorpresa en la caja", family: "Clasicos", placement: "bottom-right", price: 15, imageUrl: "" },
+      { code: "C05", name: "Lluvia de nieve", family: "Clasicos", placement: "bottom-right", price: 15, imageUrl: "" },
+      { code: "C06", name: "Corona navideña", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C07", name: "El pergamino", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C08", name: "La carta de Santa", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C09", name: "Decorando el árbol", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C10", name: "Torre de regalos", family: "Clasicos", placement: "bottom-right", price: 15, imageUrl: "" },
+      { code: "C11", name: "Chocolate caliente", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C12", name: "Baile con taza", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C13", name: "Selfie con el reno", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C14", name: "Selfie navideño", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C15", name: "Abrazo de nieve", family: "Clasicos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "C16", name: "Santa cantante", family: "Clasicos", placement: "bottom-right", price: 15, imageUrl: "" },
+
+      { code: "T01", name: "Santa Claus is coming to town", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T02", name: "Pingüino con café", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T03", name: "Galleta de jengibre", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T04", name: "Merry Christmas", family: "Tiernos", placement: "bottom-right", price: 15, imageUrl: "" },
+      { code: "T05", name: "Bastón con lazo", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T06", name: "Media con Santa", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T07", name: "Taza de chocolate", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T08", name: "Buzón navideño", family: "Tiernos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "T09", name: "Globo de nieve", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T10", name: "Ositos navideños", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T11", name: "Gnomo con galleta", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T12", name: "Muñeco de corazones", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T13", name: "Happy New Year", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T14", name: "Santa con letrero", family: "Tiernos", placement: "bottom-right", price: 15, imageUrl: "" },
+      { code: "T15", name: "Arbolito", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T16", name: "Muñeco de sombrero", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T17", name: "Duende", family: "Tiernos", placement: "bottom-left", price: 15, imageUrl: "" },
+      { code: "T18", name: "Duendecita", family: "Tiernos", placement: "bottom-right", price: 15, imageUrl: "" },
+      { code: "T19", name: "Santa con saco", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" },
+      { code: "T20", name: "Renito", family: "Tiernos", placement: "chest-left", price: 15, imageUrl: "" }
+    ];
+
+    let catalog = [...DEFAULT_CATALOG];
+    let globalColor = "white";
+    let familyFilter = "all";
+    let searchQuery = "";
+    let cart = [];
+
+    // Studio Onboarding State
+    let studio = {
+      step: 1,
+      color: "white",
+      family: "Asomados",
+      code: "A01",
+      placement: "suggested",
+      childName: "",
+      namePos: "chest-right",
+      nameFont: "festive",
+      size: "8"
+    };
+
+    // Modal State
+    let modalState = {
+      code: "A01",
+      color: "white",
+      size: "8",
+      placement: "suggested",
+      childName: ""
+    };
+
+    // =========================================================================
+    // GOOGLE DRIVE & IMAGE URL CONVERTER
+    // =========================================================================
+    function normalizeImageUrl(rawUrl) {
+      if (!rawUrl) return { primary: "", fallback: "" };
+      const url = rawUrl.trim();
+      const driveMatch = url.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|docs\.google\.com\/file\/d\/)([a-zA-Z0-9_-]{15,})/);
+      if (driveMatch && driveMatch[1]) {
+        const id = driveMatch[1];
+        return {
+          primary: `https://lh3.googleusercontent.com/d/${id}=w600`,
+          fallback: `https://drive.google.com/thumbnail?id=${id}&sz=w600`
+        };
+      }
+      return { primary: url, fallback: "" };
+    }
+
+    // =========================================================================
+    // CSV PARSER & LIVE SYNC FROM GOOGLE SHEETS
+    // =========================================================================
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let current = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const next = text[i + 1];
+        if (char === '"') {
+          if (inQuotes && next === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === "," && !inQuotes) {
+          row.push(current.trim());
+          current = "";
+        } else if ((char === "\n" || (char === "\r" && next === "\n")) && !inQuotes) {
+          if (char === "\r") i++;
+          row.push(current.trim());
+          if (row.some(cell => cell !== "")) rows.push(row);
+          row = [];
+          current = "";
+        } else {
+          current += char;
+        }
+      }
+      if (current.length > 0 || row.length > 0) {
+        row.push(current.trim());
+        if (row.some(cell => cell !== "")) rows.push(row);
+      }
+      return rows;
+    }
+
+    function normalizeFamily(raw) {
+      const val = (raw || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if (val.includes("asom")) return "Asomados";
+      if (val.includes("clas")) return "Clasicos";
+      if (val.includes("tier")) return "Tiernos";
+      return "Asomados";
+    }
+
+    async function loadGoogleSheetCatalog(customUrl) {
+      const csvUrl = customUrl || localStorage.getItem("custom_sheets_csv_url") || DEFAULT_GOOGLE_SHEETS_CSV_URL;
+      const statusEl = document.getElementById("sheetStatusText");
+
+      try {
+        if (statusEl) statusEl.textContent = "● Sincronizando catálogo...";
+        const res = await fetch(csvUrl, { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const csvText = await res.text();
+        const rows = parseCSV(csvText);
+        if (rows.length < 2) throw new Error("CSV vacío");
+
+        const headers = rows[0].map(h => h.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+        const idxCode = headers.indexOf("codigo");
+        const idxName = headers.indexOf("nombre");
+        const idxFam = headers.indexOf("familia");
+        const idxPos = headers.indexOf("ubicacion");
+        const idxPrice = headers.indexOf("precio");
+        const idxActive = headers.indexOf("activo");
+        const idxImg = headers.indexOf("imagen_url");
+
+        const parsedItems = [];
+        for (let i = 1; i < rows.length; i++) {
+          const r = rows[i];
+          const code = (r[idxCode] || "").toUpperCase().trim();
+          if (!code) continue;
+
+          const activeVal = (r[idxActive] || "si").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+          if (activeVal === "no" || activeVal === "false" || activeVal === "0") continue;
+
+          const fallbackItem = DEFAULT_CATALOG.find(d => d.code === code);
+          const name = (r[idxName] || (fallbackItem ? fallbackItem.name : code)).trim();
+          const family = idxFam >= 0 && r[idxFam] ? normalizeFamily(r[idxFam]) : (fallbackItem ? fallbackItem.family : "Asomados");
+          const placement = idxPos >= 0 && r[idxPos] ? r[idxPos].trim() : (fallbackItem ? fallbackItem.placement : "chest-left");
+          const priceNum = parseFloat((r[idxPrice] || "15").replace(/[^0-9.]/g, "")) || 15;
+          const imageUrl = idxImg >= 0 ? (r[idxImg] || "").trim() : "";
+
+          parsedItems.push({ code, name, family, placement, price: priceNum, imageUrl });
+        }
+
+        if (parsedItems.length > 0) {
+          catalog = parsedItems;
+          if (!catalog.some(item => item.code === studio.code)) {
+            studio.code = catalog[0].code;
+            studio.family = catalog[0].family;
+          }
+          const withPhotos = catalog.filter(i => i.imageUrl).length;
+          if (statusEl) {
+            statusEl.textContent = withPhotos > 0
+              ? `● Catálogo en vivo (${withPhotos} fotos cargadas)`
+              : `● Catálogo conectado (${catalog.length} diseños)`;
+            statusEl.className = "text-[11px] text-emerald-700 font-semibold";
+          }
+          renderAll();
+        }
+      } catch (err) {
+        console.warn("Usando catálogo local de respaldo:", err);
+        if (statusEl) {
+          statusEl.textContent = "● Modo catálogo local";
+          statusEl.className = "text-[11px] text-amber-700 font-semibold";
+        }
+      }
+    }
+
+    // =========================================================================
+    // SVG ARTWORK & T-SHIRT RENDER ENGINE
+    // =========================================================================
+    function getMotifFallbackSVG(item) {
+      const fam = item.family;
+      if (fam === "Asomados") {
+        return `
+          <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-xs">
+            <path d="M22 48 C22 24, 78 24, 78 48 Z" fill="#DC2626" stroke="#1F2937" stroke-width="3"/>
+            <rect x="18" y="44" width="64" height="12" rx="6" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
+            <circle cx="82" cy="36" r="8" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
+            <rect x="26" y="54" width="48" height="24" rx="10" fill="#FDBA74" stroke="#1F2937" stroke-width="3"/>
+            <circle cx="41" cy="63" r="3.5" fill="#1F2937"/>
+            <circle cx="59" cy="63" r="3.5" fill="#1F2937"/>
+            <circle cx="50" cy="70" r="5" fill="#F87171" stroke="#1F2937" stroke-width="2.5"/>
+            <path d="M20 75 Q50 96 80 75" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
+          </svg>`;
+      }
+      if (fam === "Clasicos") {
+        return `
+          <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-xs">
+            <circle cx="50" cy="52" r="36" fill="#FEF3C7" stroke="#D97706" stroke-width="3"/>
+            <polygon points="50,20 26,64 74,64" fill="#15803D" stroke="#14532D" stroke-width="3" stroke-linejoin="round"/>
+            <polygon points="50,34 30,74 70,74" fill="#16A34A" stroke="#14532D" stroke-width="3" stroke-linejoin="round"/>
+            <polygon points="50,11 53,18 61,18 55,23 57,30 50,25 43,30 45,23 39,18 47,18" fill="#FBBF24" stroke="#92400E" stroke-width="2"/>
+            <circle cx="44" cy="54" r="3.5" fill="#EF4444"/>
+            <circle cx="57" cy="62" r="3.5" fill="#FBBF24"/>
+            <rect x="44" y="74" width="12" height="10" fill="#78350F"/>
+          </svg>`;
+      }
+      return `
+        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-xs">
+          <circle cx="50" cy="56" r="26" fill="#D97706" stroke="#1F2937" stroke-width="3"/>
+          <path d="M34 34 L26 16 M26 24 L20 22 M30 20 L34 15" stroke="#78350F" stroke-width="4" stroke-linecap="round"/>
+          <path d="M66 34 L74 16 M74 24 L80 22 M70 20 L66 15" stroke="#78350F" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="41" cy="52" r="4" fill="#1F2937"/>
+          <circle cx="59" cy="52" r="4" fill="#1F2937"/>
+          <circle cx="50" cy="62" r="6.5" fill="#DC2626" stroke="#1F2937" stroke-width="2.5"/>
+          <rect x="32" y="78" width="36" height="10" rx="5" fill="#DC2626" stroke="#1F2937" stroke-width="2.5"/>
+        </svg>`;
+    }
+
+    function getPlacementClasses(placement) {
+      switch (placement) {
+        case "chest-left":    return "top-[28%] right-[25%] w-[24%] h-[24%]";
+        case "center":        return "top-[34%] left-1/2 -translate-x-1/2 w-[36%] h-[36%]";
+        case "bottom-left":   return "bottom-[8%] left-[21%] w-[32%] h-[32%]";
+        case "bottom-right":  return "bottom-[8%] right-[21%] w-[32%] h-[32%]";
+        case "bottom-center": return "bottom-[7%] left-1/2 -translate-x-1/2 w-[36%] h-[30%]";
+        case "side-left":     return "top-[42%] left-[20%] w-[28%] h-[34%]";
+        case "side-right":    return "top-[42%] right-[20%] w-[28%] h-[34%]";
+        default:              return "top-[28%] right-[25%] w-[24%] h-[24%]";
+      }
+    }
+
+    function getNamePositionClasses(namePos, resolvedPlacement) {
+      if (namePos === "center-top") return "top-[21%] left-1/2 -translate-x-1/2 text-center";
+      if (namePos === "bottom-opposite") {
+        return resolvedPlacement.includes("right")
+          ? "bottom-[12%] left-[22%] text-left"
+          : "bottom-[12%] right-[22%] text-right";
+      }
+      if (namePos === "under-motif") {
+        return resolvedPlacement === "chest-left"
+          ? "top-[53%] right-[23%] text-center"
+          : "top-[52%] left-1/2 -translate-x-1/2 text-center";
+      }
+      return "top-[29%] left-[23%] text-left"; // chest-right
+    }
+
+    function renderShirtMockup(item, color, placementOverride, childName = "", namePos = "chest-right", nameFont = "festive", isLarge = false) {
+      const shirtFill = color === "red" ? "#B91C1C" : "#FFFFFF";
+      const shirtStroke = color === "red" ? "#7F1D1D" : "#E5E7EB";
+      const collarFill = color === "red" ? "#991B1B" : "#F3F4F6";
+      const resolvedPlacement = (!placementOverride || placementOverride === "suggested") ? item.placement : placementOverride;
+      const posClass = getPlacementClasses(resolvedPlacement);
+      const urls = normalizeImageUrl(item.imageUrl);
+
+      const artworkHTML = urls.primary
+        ? `<img src="${urls.primary}" alt="${item.name}"
+             onerror="if(this.dataset.triedFallback!=='1' && '${urls.fallback}'){this.dataset.triedFallback='1';this.src='${urls.fallback}';}else{this.style.display='none';this.nextElementSibling.style.display='block';}"
+             class="w-full h-full object-contain select-none pointer-events-none" />
+           <div style="display:none" class="w-full h-full">${getMotifFallbackSVG(item)}</div>`
+        : getMotifFallbackSVG(item);
+
+      const cleanName = (childName || "").trim();
+      const nameColor = color === "red" ? "#FDE68A" : "#991B1B";
+      const nameShadow = color === "red" ? "0 1px 3px rgba(0,0,0,0.55)" : "0 1px 0 rgba(255,255,255,0.9)";
+      const nameFontClass = nameFont === "festive" ? "font-festive" : "font-extrabold tracking-wide uppercase";
+      const namePosClass = getNamePositionClasses(namePos, resolvedPlacement);
+
+      const nameHTML = cleanName
+        ? `<div class="absolute ${namePosClass} max-w-[44%] px-1 pointer-events-none z-20 leading-none truncate ${nameFontClass} ${isLarge ? "text-sm sm:text-lg" : "text-[10px]"}"
+             style="color:${nameColor}; text-shadow:${nameShadow};">
+             ${escapeHTML(cleanName)}
+           </div>`
+        : "";
+
+      return `
+        <div class="relative w-full h-full flex items-center justify-center select-none">
+          <svg viewBox="0 0 300 350" class="w-full h-full ${isLarge ? "shirt-shadow" : "shirt-card-shadow"}">
+            <path d="M98 32 Q150 56 202 32 L286 78 L258 134 L224 116 L224 326 Q150 334 76 326 L76 116 L42 134 L14 78 Z"
+              fill="${shirtFill}" stroke="${shirtStroke}" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M104 34 Q150 64 196 34 Q150 48 104 34 Z" fill="${collarFill}" stroke="${shirtStroke}" stroke-width="2"/>
+          </svg>
+          <div class="absolute ${posClass} flex items-center justify-center pointer-events-none z-10">
+            ${artworkHTML}
+          </div>
+          ${nameHTML}
+        </div>
+      `;
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+    }
+
+    // =========================================================================
+    // STUDIO ONBOARDING LOGIC
+    // =========================================================================
+    function goToStudioStep(step) {
+      studio.step = step;
+      document.getElementById("studioStepCounter").textContent = step;
+
+      for (let i = 1; i <= 5; i++) {
+        const tab = document.getElementById(`stepTab${i}`);
+        const panel = document.getElementById(`studioPanel${i}`);
+        if (i === step) {
+          tab.className = "step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-extrabold transition text-center bg-red-700 text-white shadow-xs";
+          panel.classList.remove("hidden");
+        } else {
+          tab.className = "step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-bold transition text-center bg-stone-100 text-stone-600 hover:bg-stone-200";
+          panel.classList.add("hidden");
+        }
+      }
+
+      document.getElementById("studioPrevBtn").disabled = (step === 1);
+      if (step === 5) {
+        document.getElementById("studioNextBtn").classList.add("hidden");
+        document.getElementById("studioAddBtn").classList.remove("hidden");
+      } else {
+        document.getElementById("studioNextBtn").classList.remove("hidden");
+        document.getElementById("studioAddBtn").classList.add("hidden");
+      }
+      renderStudio();
+    }
+
+    function nextStudioStep() {
+      if (studio.step < 5) goToStudioStep(studio.step + 1);
+    }
+
+    function prevStudioStep() {
+      if (studio.step > 1) goToStudioStep(studio.step - 1);
+    }
+
+    function setStudioColor(color) {
+      studio.color = color;
+      const wBtn = document.getElementById("studioColorWhite");
+      const rBtn = document.getElementById("studioColorRed");
+      if (color === "white") {
+        wBtn.className = "p-4 rounded-2xl border-2 border-red-700 bg-red-50/40 flex flex-col items-center gap-2.5 transition active:scale-98";
+        rBtn.className = "p-4 rounded-2xl border-2 border-stone-200 hover:border-stone-300 bg-white flex flex-col items-center gap-2.5 transition active:scale-98";
+      } else {
+        rBtn.className = "p-4 rounded-2xl border-2 border-red-700 bg-red-50/40 flex flex-col items-center gap-2.5 transition active:scale-98";
+        wBtn.className = "p-4 rounded-2xl border-2 border-stone-200 hover:border-stone-300 bg-white flex flex-col items-center gap-2.5 transition active:scale-98";
+      }
+      renderStudio();
+    }
+
+    function setStudioFamily(fam) {
+      studio.family = fam;
+      ["Asomados", "Clasicos", "Tiernos"].forEach(f => {
+        const btn = document.getElementById(`stFam${f}`);
+        if (btn) {
+          btn.className = f === fam
+            ? "st-fam-btn px-3 py-2 min-h-[38px] rounded-full text-xs font-bold bg-red-700 text-white shrink-0"
+            : "st-fam-btn px-3 py-2 min-h-[38px] rounded-full text-xs font-bold bg-stone-100 text-stone-700 shrink-0";
+        }
+      });
+      renderStudioDesignGrid();
+    }
+
+    function selectStudioMotif(code) {
+      const item = catalog.find(d => d.code === code);
+      if (!item) return;
+      studio.code = item.code;
+      studio.family = item.family;
+      renderStudio();
+    }
+
+    function setStudioPlacement(pos) {
+      studio.placement = pos;
+      renderStudio();
+    }
+
+    function setStudioName(val) {
+      studio.childName = val;
+      const clearBtn = document.getElementById("clearStudioNameBtn");
+      if (val.trim()) clearBtn.classList.remove("hidden");
+      else clearBtn.classList.add("hidden");
+      renderStudio();
+    }
+
+    function clearStudioName() {
+      studio.childName = "";
+      document.getElementById("studioChildName").value = "";
+      document.getElementById("clearStudioNameBtn").classList.add("hidden");
+      renderStudio();
+    }
+
+    function setStudioNamePos(pos) {
+      studio.namePos = pos;
+      renderStudio();
+    }
+
+    function setStudioNameFont(font) {
+      studio.nameFont = font;
+      renderStudio();
+    }
+
+    function setStudioSize(size) {
+      studio.size = size;
+      renderStudio();
+    }
+
+    function renderStudioDesignGrid() {
+      const grid = document.getElementById("studioDesignGrid");
+      const filtered = catalog.filter(d => d.family === studio.family);
+      grid.innerHTML = filtered.map(item => {
+        const selected = item.code === studio.code;
+        const urls = normalizeImageUrl(item.imageUrl);
+        const thumb = urls.primary
+          ? `<img src="${urls.primary}" alt="${item.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
+          : `<div class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`;
+
+        return `
+          <button onclick="selectStudioMotif('${item.code}')"
+            class="p-2 rounded-xl border-2 text-center transition flex flex-col items-center justify-between gap-1 ${selected ? "border-red-700 bg-red-50/50" : "border-stone-200 bg-white hover:border-stone-300"}">
+            ${thumb}
+            <span class="text-[11px] font-extrabold text-stone-900">${item.code}</span>
+            <span class="text-[10px] text-stone-500 line-clamp-1 leading-tight">${item.name}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderStudio() {
+      const item = catalog.find(d => d.code === studio.code) || catalog[0];
+      if (!item) return;
+
+      // Render large shirt preview
+      document.getElementById("studioCanvas").innerHTML = renderShirtMockup(
+        item, studio.color, studio.placement, studio.childName, studio.namePos, studio.nameFont, true
+      );
+
+      document.getElementById("studioMotifBadge").textContent = `${item.code} · ${item.name}`;
+
+      // Render placement buttons
+      document.getElementById("studioPlacementGrid").innerHTML = PLACEMENT_OPTIONS.map(opt => {
+        const active = studio.placement === opt.id;
+        return `
+          <button onclick="setStudioPlacement('${opt.id}')"
+            class="p-2.5 min-h-[42px] rounded-xl border-2 text-left text-xs font-bold transition ${active ? "border-red-700 bg-red-50/50 text-red-900" : "border-stone-200 text-stone-700 hover:border-stone-300"}">
+            ${opt.label}
+          </button>
+        `;
+      }).join("");
+
+      // Render size grid
+      document.getElementById("studioSizeGrid").innerHTML = SIZES.map(sz => {
+        const active = studio.size === sz;
+        return `
+          <button onclick="setStudioSize('${sz}')"
+            class="py-2.5 min-h-[42px] rounded-xl border-2 font-extrabold text-xs sm:text-sm transition ${active ? "border-red-700 bg-red-700 text-white" : "border-stone-200 bg-white text-stone-800 hover:border-stone-300"}">
+            ${sz}
+          </button>
+        `;
+      }).join("");
+
+      renderStudioDesignGrid();
+
+      const colorText = studio.color === "red" ? "roja" : "blanca";
+      const namePart = studio.childName.trim() ? ` · Nombre: "${studio.childName.trim()}"` : "";
+      const summary = `${item.code} (${item.name}) · Franela ${colorText} · Talla ${studio.size}${namePart}`;
+      document.getElementById("studioLiveSummary").textContent = summary;
+
+      const placeLabel = PLACEMENT_OPTIONS.find(p => p.id === studio.placement)?.label || "Sugerida";
+      document.getElementById("studioFinalDetail").textContent = `${summary} · Ubicación: ${placeLabel}`;
+    }
+
+    function addStudioToCart() {
+      const item = catalog.find(d => d.code === studio.code) || catalog[0];
+      if (!item) return;
+      addToCart({
+        code: item.code,
+        name: item.name,
+        color: studio.color,
+        size: studio.size,
+        placement: studio.placement,
+        childName: studio.childName.trim(),
+        namePos: studio.namePos,
+        nameFont: studio.nameFont,
+        price: item.price,
+        imageUrl: item.imageUrl,
+        family: item.family
+      });
+      toggleCart(true);
+    }
+
+    // =========================================================================
+    // CATALOG GRID & FILTERING
+    // =========================================================================
+    function setGlobalColor(color) {
+      globalColor = color;
+      const wBtn = document.getElementById("globalWhiteBtn");
+      const rBtn = document.getElementById("globalRedBtn");
+      if (color === "white") {
+        wBtn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition bg-white text-stone-900 shadow-sm";
+        rBtn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition text-stone-600 hover:text-stone-900";
+      } else {
+        rBtn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition bg-red-700 text-white shadow-sm";
+        wBtn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition text-stone-600 hover:text-stone-900";
+      }
+      renderCatalog();
+    }
+
+    function setFamilyFilter(fam) {
+      familyFilter = fam;
+      document.querySelectorAll(".family-tab").forEach(btn => {
+        btn.className = "family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-50";
+      });
+      const active = document.getElementById(`tab-${fam}`);
+      if (active) {
+        active.className = "family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-red-700 text-white shadow-xs";
+      }
+      renderCatalog();
+    }
+
+    function resetFilters() {
+      searchQuery = "";
+      document.getElementById("searchInput").value = "";
+      document.getElementById("searchInputMobile").value = "";
+      setFamilyFilter("all");
+    }
+
+    function updateFamilyCounts() {
+      document.getElementById("count-all").textContent = catalog.length;
+      document.getElementById("count-Asomados").textContent = catalog.filter(i => i.family === "Asomados").length;
+      document.getElementById("count-Clasicos").textContent = catalog.filter(i => i.family === "Clasicos").length;
+      document.getElementById("count-Tiernos").textContent = catalog.filter(i => i.family === "Tiernos").length;
+    }
+
+    function renderCatalog() {
+      updateFamilyCounts();
+      const grid = document.getElementById("catalogGrid");
+      const empty = document.getElementById("emptyState");
+      const q = searchQuery.toLowerCase().trim();
+
+      const filtered = catalog.filter(item => {
+        const matchFam = familyFilter === "all" || item.family === familyFilter;
+        const matchSearch = !q || item.code.toLowerCase().includes(q) || item.name.toLowerCase().includes(q);
+        return matchFam && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = "";
+        empty.classList.remove("hidden");
+        return;
+      }
+
+      empty.classList.add("hidden");
+      grid.innerHTML = filtered.map(item => `
+        <div class="group bg-white rounded-3xl border border-stone-200/90 overflow-hidden shadow-2xs hover:shadow-md transition flex flex-col">
+          <div onclick="openProductModal('${item.code}')" class="cursor-pointer bg-stone-100/80 p-3 sm:p-5 aspect-[4/5] relative flex items-center justify-center overflow-hidden">
+            <span class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded-lg bg-white/95 border border-stone-200 text-[11px] font-extrabold text-stone-800 shadow-2xs">
+              ${item.code}
+            </span>
+            <div class="w-full h-full group-hover:scale-105 transition duration-300">
+              ${renderShirtMockup(item, globalColor, "suggested")}
+            </div>
+          </div>
+
+          <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between gap-2.5">
+            <div>
+              <h3 onclick="openProductModal('${item.code}')" class="cursor-pointer font-bold text-xs sm:text-sm text-stone-900 line-clamp-1 group-hover:text-red-700 transition">
+                ${item.name}
+              </h3>
+              <p class="text-[11px] text-stone-500 mt-0.5">Tallas 4 a 16</p>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 pt-1">
+              <span class="font-festive text-lg sm:text-xl font-bold text-red-800">$${item.price}</span>
+              <button onclick="openProductModal('${item.code}')"
+                class="px-3 py-2 min-h-[38px] rounded-xl bg-red-700 hover:bg-red-800 active:scale-95 text-white text-xs font-extrabold transition">
+                Elegir
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // =========================================================================
+    // QUICK PRODUCT MODAL
+    // =========================================================================
+    function openProductModal(code) {
+      const item = catalog.find(d => d.code === code);
+      if (!item) return;
+
+      modalState = {
+        code: item.code,
+        color: globalColor,
+        size: "8",
+        placement: "suggested",
+        childName: ""
+      };
+
+      document.getElementById("modalCode").textContent = item.code;
+      document.getElementById("modalTitle").textContent = item.name;
+      document.getElementById("modalPriceTag").textContent = `$${item.price}`;
+      document.getElementById("modalPlacementSelect").value = "suggested";
+      document.getElementById("modalChildName").value = "";
+
+      renderModalPreview();
+      const modal = document.getElementById("productModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeProductModal() {
+      const modal = document.getElementById("productModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function setModalColor(color) {
+      modalState.color = color;
+      renderModalPreview();
+    }
+
+    function setModalSize(size) {
+      modalState.size = size;
+      renderModalPreview();
+    }
+
+    function setModalPlacement(pos) {
+      modalState.placement = pos;
+      renderModalPreview();
+    }
+
+    function setModalName(val) {
+      modalState.childName = val;
+      renderModalPreview();
+    }
+
+    function renderModalPreview() {
+      const item = catalog.find(d => d.code === modalState.code);
+      if (!item) return;
+
+      const wBtn = document.getElementById("modalColorWhite");
+      const rBtn = document.getElementById("modalColorRed");
+      if (modalState.color === "white") {
+        wBtn.className = "py-2.5 min-h-[42px] rounded-xl border-2 border-red-700 bg-red-50/40 text-xs font-bold flex items-center justify-center gap-2";
+        rBtn.className = "py-2.5 min-h-[42px] rounded-xl border-2 border-stone-200 text-xs font-bold flex items-center justify-center gap-2";
+      } else {
+        rBtn.className = "py-2.5 min-h-[42px] rounded-xl border-2 border-red-700 bg-red-50/40 text-xs font-bold flex items-center justify-center gap-2";
+        wBtn.className = "py-2.5 min-h-[42px] rounded-xl border-2 border-stone-200 text-xs font-bold flex items-center justify-center gap-2";
+      }
+
+      document.getElementById("modalSizeGrid").innerHTML = SIZES.map(sz => {
+        const active = modalState.size === sz;
+        return `
+          <button onclick="setModalSize('${sz}')"
+            class="py-2 min-h-[38px] rounded-xl border-2 text-xs font-extrabold transition ${active ? "border-red-700 bg-red-700 text-white" : "border-stone-200 text-stone-800 hover:border-stone-300"}">
+            ${sz}
+          </button>
+        `;
+      }).join("");
+
+      document.getElementById("modalShirtPreview").innerHTML = renderShirtMockup(
+        item, modalState.color, modalState.placement, modalState.childName, "chest-right", "festive", true
+      );
+    }
+
+    function addModalToCart() {
+      const item = catalog.find(d => d.code === modalState.code);
+      if (!item) return;
+      addToCart({
+        code: item.code,
+        name: item.name,
+        color: modalState.color,
+        size: modalState.size,
+        placement: modalState.placement,
+        childName: modalState.childName.trim(),
+        namePos: "chest-right",
+        nameFont: "festive",
+        price: item.price,
+        imageUrl: item.imageUrl,
+        family: item.family
+      });
+      closeProductModal();
+      toggleCart(true);
+    }
+
+    // =========================================================================
+    // CART & WHATSAPP ORDER GENERATOR
+    // =========================================================================
+    function addToCart(entry) {
+      const existing = cart.find(c =>
+        c.code === entry.code &&
+        c.color === entry.color &&
+        c.size === entry.size &&
+        c.placement === entry.placement &&
+        c.childName === entry.childName
+      );
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...entry, qty: 1, uid: Date.now() + Math.random() });
+      }
+      renderCart();
+    }
+
+    function updateCartQty(uid, delta) {
+      const idx = cart.findIndex(c => c.uid === uid);
+      if (idx === -1) return;
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) cart.splice(idx, 1);
+      renderCart();
+    }
+
+    function toggleCart(open) {
+      const drawer = document.getElementById("cartDrawer");
+      if (open) {
+        drawer.classList.remove("hidden");
+        drawer.classList.add("flex");
+        renderCart();
+      } else {
+        drawer.classList.add("hidden");
+        drawer.classList.remove("flex");
+      }
+    }
+
+    function getPlacementText(placementId) {
+      const found = PLACEMENT_OPTIONS.find(p => p.id === placementId);
+      return found ? found.label : "Sugerida";
+    }
+
+    function renderCart() {
+      const totalItems = cart.reduce((acc, c) => acc + c.qty, 0);
+      const totalAmount = cart.reduce((acc, c) => acc + c.qty * c.price, 0);
+
+      document.getElementById("cartCountBadge").textContent = totalItems;
+      document.getElementById("cartTotalAmount").textContent = `$${totalAmount}`;
+      document.getElementById("whatsappOrderBtn").disabled = (cart.length === 0);
+
+      const container = document.getElementById("cartItemsContainer");
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-14 text-stone-400">
+            <p class="font-festive text-lg font-bold text-stone-600">Tu carrito está vacío</p>
+            <p class="text-xs mt-1">Elige una franela del diseñador o del catálogo para comenzar.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = cart.map(item => {
+        const colorLabel = item.color === "red" ? "Roja" : "Blanca";
+        const nameLine = item.childName
+          ? `<p class="text-[11px] font-bold text-red-700 mt-0.5">Nombre: "${escapeHTML(item.childName)}"</p>`
+          : "";
+
+        return `
+          <div class="p-3 rounded-2xl border border-stone-200 bg-white flex items-center gap-3">
+            <div class="w-16 h-20 bg-stone-100 rounded-xl p-1 shrink-0">
+              ${renderShirtMockup(item, item.color, item.placement, item.childName, item.namePos, item.nameFont, false)}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-xs font-extrabold text-stone-900 truncate">${item.code} · ${item.name}</span>
+                <span class="text-xs font-extrabold text-red-800">$${item.price * item.qty}</span>
+              </div>
+              <p class="text-[11px] text-stone-500 mt-0.5">Franela ${colorLabel} · Talla ${item.size}</p>
+              <p class="text-[11px] text-stone-400">Ubicación: ${getPlacementText(item.placement)}</p>
+              ${nameLine}
+              <div class="flex items-center gap-2 mt-2">
+                <button onclick="updateCartQty(${item.uid}, -1)" class="w-7 h-7 rounded-lg bg-stone-100 hover:bg-stone-200 font-bold text-xs">−</button>
+                <span class="text-xs font-extrabold w-5 text-center">${item.qty}</span>
+                <button onclick="updateCartQty(${item.uid}, 1)" class="w-7 h-7 rounded-lg bg-stone-100 hover:bg-stone-200 font-bold text-xs">+</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function sendWhatsAppOrder() {
+      if (cart.length === 0) return;
+
+      const lines = cart.map((item, idx) => {
+        const colorText = item.color === "red" ? "franela roja" : "franela blanca";
+        const posText = item.placement === "suggested" ? "" : ` | Ubicación: ${getPlacementText(item.placement)}`;
+        const nameText = item.childName ? ` | Nombre: "${item.childName}"` : "";
+        return `${idx + 1}. *${item.code}* (${item.name}) - ${colorText} talla *${item.size}* (x${item.qty})${posText}${nameText} = *$${item.price * item.qty}*`;
+      });
+
+      const total = cart.reduce((acc, c) => acc + c.qty * c.price, 0);
+      const message =
+        `🎄 *¡Hola! Quiero hacer este pedido de Franelas Navideñas:*\n\n` +
+        lines.join("\n") +
+        `\n\n💰 *Total a pagar: $${total}*\n¿Me confirman disponibilidad y datos de pago?`;
+
+      const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+
+    // =========================================================================
+    // GOOGLE SHEETS CONFIG MODAL
+    // =========================================================================
+    function openSheetsModal() {
+      document.getElementById("sheetsUrlInput").value = localStorage.getItem("custom_sheets_csv_url") || DEFAULT_GOOGLE_SHEETS_CSV_URL;
+      const m = document.getElementById("sheetsModal");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function closeSheetsModal() {
+      const m = document.getElementById("sheetsModal");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    function saveAndReloadSheets() {
+      const val = document.getElementById("sheetsUrlInput").value.trim();
+      if (val) {
+        localStorage.setItem("custom_sheets_csv_url", val);
+        loadGoogleSheetCatalog(val);
+      }
+      closeSheetsModal();
+    }
+
+    function resetSheetsUrl() {
+      localStorage.removeItem("custom_sheets_csv_url");
+      document.getElementById("sheetsUrlInput").value = DEFAULT_GOOGLE_SHEETS_CSV_URL;
+      loadGoogleSheetCatalog(DEFAULT_GOOGLE_SHEETS_CSV_URL);
+      closeSheetsModal();
+    }
+
+    // =========================================================================
+    // INIT & EVENT LISTENERS
+    // =========================================================================
+    function renderAll() {
+      renderStudio();
+      renderCatalog();
+      renderCart();
+    }
+
+    document.getElementById("searchInput").addEventListener("input", e => {
+      searchQuery = e.target.value;
+      document.getElementById("searchInputMobile").value = searchQuery;
+      document.getElementById("clearSearchBtn").classList.toggle("hidden", !searchQuery);
+      renderCatalog();
+    });
+
+    document.getElementById("searchInputMobile").addEventListener("input", e => {
+      searchQuery = e.target.value;
+      document.getElementById("searchInput").value = searchQuery;
+      renderCatalog();
+    });
+
+    document.getElementById("clearSearchBtn").addEventListener("click", resetFilters);
+
+    document.getElementById("productModal").addEventListener("click", e => {
+      if (e.target.id === "productModal") closeProductModal();
+    });
+
+    document.getElementById("cartDrawer").addEventListener("click", e => {
+      if (e.target.id === "cartDrawer") toggleCart(false);
+    });
+
+    // Boot
+    renderAll();
+    loadGoogleSheetCatalog();
+  </script>
+</body>
+</html>

@@ -13,14 +13,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-    }
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-    }
+    :root { --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: #FAF7F5;
@@ -34,42 +28,21 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .shirt-shadow { filter: drop-shadow(0 14px 24px rgba(17, 24, 39, 0.14)); }
     .shirt-card-shadow { filter: drop-shadow(0 8px 14px rgba(17, 24, 39, 0.09)); }
-    /* Recorte exacto a la silueta de la franela (viewBox 300x360) para que ningún diseño se salga */
     .shirt-clip {
       clip-path: polygon(
-        31.3% 7.2%,
-        50% 12.2%,
-        68.7% 7.2%,
-        96.7% 20.6%,
-        87.3% 36.7%,
-        81.3% 32.8%,
-        81.3% 93.9%,
-        50% 95.3%,
-        18.7% 93.9%,
-        18.7% 32.8%,
-        12.7% 36.7%,
-        3.3% 20.6%
+        31.3% 7.2%, 50% 12.2%, 68.7% 7.2%, 96.7% 20.6%, 87.3% 36.7%, 81.3% 32.8%,
+        81.3% 93.9%, 50% 95.3%, 18.7% 93.9%, 18.7% 32.8%, 12.7% 36.7%, 3.3% 20.6%
       );
     }
-    @media (max-width: 640px) {
-      input, select, textarea { font-size: 16px !important; }
-    }
-    .modal-sheet {
-      max-height: 92dvh;
-      padding-bottom: calc(1rem + var(--safe-bottom));
-    }
-    .drawer-full {
-      height: 100dvh;
-      padding-bottom: var(--safe-bottom);
-    }
+    @media (max-width: 640px) { input, select, textarea { font-size: 16px !important; } }
+    .modal-sheet { max-height: 92dvh; padding-bottom: calc(1rem + var(--safe-bottom)); }
+    .drawer-full { height: 100dvh; padding-bottom: var(--safe-bottom); }
   </style>
 </head>
 <body class="antialiased selection:bg-red-700 selection:text-white">
 
-  <!-- Top Header -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80" style="padding-top: var(--safe-top);">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-3">
-      <!-- Brand -->
       <a href="#" class="flex items-center gap-2 shrink-0 min-h-[44px]">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-700 to-red-800 text-white flex items-center justify-center shadow-sm">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -82,7 +55,6 @@
         </div>
       </a>
 
-      <!-- Search Bar -->
       <div class="relative flex-1 max-w-md hidden md:block">
         <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
@@ -92,7 +64,6 @@
         <button id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 text-xs font-bold">✕</button>
       </div>
 
-      <!-- Global Color Switch & Cart -->
       <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
         <div class="flex items-center bg-stone-100 p-1 rounded-full border border-stone-200/80" title="Color de vista previa en catálogo">
           <button id="globalWhiteBtn" onclick="setGlobalColor('white')"
@@ -119,7 +90,6 @@
       </div>
     </div>
 
-    <!-- Mobile Search Bar -->
     <div class="px-3 pb-2.5 md:hidden">
       <div class="relative">
         <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -131,36 +101,28 @@
     </div>
   </header>
 
-  <!-- Hero Banner -->
   <section class="relative overflow-hidden bg-gradient-to-br from-red-900 via-red-800 to-red-950 text-white">
     <div class="absolute inset-0 opacity-15 pointer-events-none"
       style="background-image: radial-gradient(#ffffff 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-7 sm:py-12 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="text-center md:text-left max-w-2xl">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-amber-200 text-xs font-bold tracking-wide mb-3">
-          <span>🎄 COLECCIÓN NAVIDAD</span>
-          <span>•</span>
-          <span>52 DISEÑOS EXCLUSIVOS</span>
+          <span>🎄 COLECCIÓN NAVIDAD</span><span>•</span><span>52 DISEÑOS EXCLUSIVOS</span>
         </div>
-        <h1 class="font-festive text-3xl sm:text-5xl font-bold tracking-tight leading-tight">
-          Franelas navideñas para niños
-        </h1>
+        <h1 class="font-festive text-3xl sm:text-5xl font-bold tracking-tight leading-tight">Franelas navideñas para niños</h1>
         <p class="text-red-100 text-sm sm:text-base mt-2.5 max-w-xl">
           Tallas 4 a 16 por <strong class="text-amber-300 font-extrabold">$15 c/u</strong>. Elige el color, el estampado, su ubicación y agrega el nombre del niño si lo deseas.
         </p>
         <div class="mt-5 flex flex-wrap items-center justify-center md:justify-start gap-2.5 sm:gap-3">
-          <a href="#disenador"
-            class="px-5 py-3 min-h-[44px] inline-flex items-center rounded-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-red-950 font-extrabold text-sm shadow-md transition">
+          <a href="#disenador" class="px-5 py-3 min-h-[44px] inline-flex items-center rounded-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-red-950 font-extrabold text-sm shadow-md transition">
             ✨ Diseñar franela paso a paso
           </a>
-          <a href="#catalogo"
-            class="px-5 py-3 min-h-[44px] inline-flex items-center rounded-full bg-white/15 hover:bg-white/25 active:scale-95 text-white font-bold text-sm border border-white/25 transition">
+          <a href="#catalogo" class="px-5 py-3 min-h-[44px] inline-flex items-center rounded-full bg-white/15 hover:bg-white/25 active:scale-95 text-white font-bold text-sm border border-white/25 transition">
             Ver los 52 motivos ↓
           </a>
         </div>
       </div>
 
-      <!-- Hero Mini Badges -->
       <div class="grid grid-cols-3 gap-2.5 sm:gap-4 shrink-0 w-full md:w-auto max-w-sm">
         <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 text-center">
           <span class="block font-festive text-2xl sm:text-3xl font-bold text-amber-300">$15</span>
@@ -178,10 +140,8 @@
     </div>
   </section>
 
-  <!-- Interactive Onboarding Customizer Studio -->
   <section id="disenador" class="max-w-7xl mx-auto px-3 sm:px-6 pt-7 sm:pt-12 pb-6">
     <div class="bg-white rounded-3xl border border-stone-200/90 shadow-sm overflow-hidden">
-      <!-- Studio Header -->
       <div class="px-4 sm:px-8 py-4 sm:py-5 border-b border-stone-100 flex flex-wrap items-center justify-between gap-2 bg-stone-50/70">
         <div>
           <h2 class="font-festive text-xl sm:text-2xl font-bold text-stone-900">Diseña tu franela a medida</h2>
@@ -193,43 +153,23 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12">
-        <!-- Left: Live Giant T-Shirt Preview -->
         <div class="lg:col-span-6 bg-gradient-to-b from-stone-100/90 to-stone-200/50 p-4 sm:p-8 flex flex-col items-center justify-center relative border-b lg:border-b-0 lg:border-r border-stone-200/80">
-          <div class="w-full max-w-[280px] sm:max-w-[350px] aspect-[5/6] relative flex items-center justify-center" id="studioCanvas">
-            <!-- Rendered by JS -->
-          </div>
-
-          <!-- Live Summary Pill -->
+          <div class="w-full max-w-[280px] sm:max-w-[350px] aspect-[5/6] relative flex items-center justify-center" id="studioCanvas"></div>
           <div class="mt-3 sm:mt-4 px-3.5 py-2 rounded-2xl bg-white/95 border border-stone-200 shadow-xs text-center max-w-md w-full">
-            <p id="studioLiveSummary" class="text-xs sm:text-sm font-bold text-stone-800 truncate">
-              A01 · Franela blanca · Talla 8
-            </p>
+            <p id="studioLiveSummary" class="text-xs sm:text-sm font-bold text-stone-800 truncate">A01 · Franela blanca · Talla 8</p>
           </div>
         </div>
 
-        <!-- Right: 5-Step Onboarding Wizard -->
         <div class="lg:col-span-6 p-4 sm:p-8 flex flex-col justify-between">
           <div>
-            <!-- Step Pills Navigation -->
             <div class="grid grid-cols-5 gap-1 sm:gap-1.5 mb-5 sm:mb-6">
-              <button onclick="goToStudioStep(1)" id="stepTab1" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-extrabold transition text-center bg-red-700 text-white shadow-xs">
-                1. Color
-              </button>
-              <button onclick="goToStudioStep(2)" id="stepTab2" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-bold transition text-center bg-stone-100 text-stone-600 hover:bg-stone-200">
-                2. Motivo
-              </button>
-              <button onclick="goToStudioStep(3)" id="stepTab3" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-bold transition text-center bg-stone-100 text-stone-600 hover:bg-stone-200">
-                3. Lugar
-              </button>
-              <button onclick="goToStudioStep(4)" id="stepTab4" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-bold transition text-center bg-stone-100 text-stone-600 hover:bg-stone-200">
-                4. Nombre
-              </button>
-              <button onclick="goToStudioStep(5)" id="stepTab5" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-bold transition text-center bg-stone-100 text-stone-600 hover:bg-stone-200">
-                5. Talla
-              </button>
+              <button onclick="goToStudioStep(1)" id="stepTab1" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-extrabold transition text-center bg-red-700 text-white shadow-xs">1. Color</button>
+              <button onclick="goToStudioStep(2)" id="stepTab2" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-bold transition text-center bg-stone-100 text-stone-600 hover:bg-stone-200">2. Motivo</button>
+              <button onclick="goToStudioStep(3)" id="stepTab3" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-bold transition text-center bg-stone-100 text-stone-600 hover:bg-stone-200">3. Lugar</button>
+              <button onclick="goToStudioStep(4)" id="stepTab4" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-bold transition text-center bg-stone-100 text-stone-600 hover:bg-stone-200">4. Nombre</button>
+              <button onclick="goToStudioStep(5)" id="stepTab5" class="step-tab py-2.5 px-1 min-h-[42px] rounded-xl text-[11px] sm:text-xs font-bold transition text-center bg-stone-100 text-stone-600 hover:bg-stone-200">5. Talla</button>
             </div>
 
-            <!-- STEP 1: COLOR -->
             <div id="studioPanel1" class="studio-panel space-y-4">
               <div>
                 <span class="text-xs font-extrabold uppercase tracking-wider text-red-700">Paso 1</span>
@@ -237,20 +177,17 @@
                 <p class="text-xs sm:text-sm text-stone-500 mt-1">Todos los motivos se estampan tanto en blanco como en rojo.</p>
               </div>
               <div class="grid grid-cols-2 gap-3 sm:gap-4 pt-1">
-                <button onclick="setStudioColor('white')" id="studioColorWhite"
-                  class="p-4 rounded-2xl border-2 border-red-700 bg-red-50/40 flex flex-col items-center gap-2.5 transition active:scale-98">
+                <button onclick="setStudioColor('white')" id="studioColorWhite" class="p-4 rounded-2xl border-2 border-red-700 bg-red-50/40 flex flex-col items-center gap-2.5 transition active:scale-98">
                   <span class="w-12 h-12 rounded-full bg-white border-2 border-stone-300 shadow-inner"></span>
                   <span class="font-bold text-sm text-stone-900">Franela Blanca</span>
                 </button>
-                <button onclick="setStudioColor('red')" id="studioColorRed"
-                  class="p-4 rounded-2xl border-2 border-stone-200 hover:border-stone-300 bg-white flex flex-col items-center gap-2.5 transition active:scale-98">
+                <button onclick="setStudioColor('red')" id="studioColorRed" class="p-4 rounded-2xl border-2 border-stone-200 hover:border-stone-300 bg-white flex flex-col items-center gap-2.5 transition active:scale-98">
                   <span class="w-12 h-12 rounded-full bg-red-700 border-2 border-red-900 shadow-inner"></span>
                   <span class="font-bold text-sm text-stone-900">Franela Roja</span>
                 </button>
               </div>
             </div>
 
-            <!-- STEP 2: MOTIF -->
             <div id="studioPanel2" class="studio-panel hidden space-y-3.5">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -259,40 +196,29 @@
                 </div>
                 <span id="studioMotifBadge" class="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-stone-100 text-stone-800">A01</span>
               </div>
-
-              <!-- Family Filter inside Studio -->
               <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
                 <button onclick="setStudioFamily('Asomados')" id="stFamAsomados" class="st-fam-btn px-3 py-2 min-h-[38px] rounded-full text-xs font-bold bg-red-700 text-white shrink-0">Asomados (A01-A16)</button>
                 <button onclick="setStudioFamily('Clasicos')" id="stFamClasicos" class="st-fam-btn px-3 py-2 min-h-[38px] rounded-full text-xs font-bold bg-stone-100 text-stone-700 shrink-0">Clásicos (C01-C16)</button>
                 <button onclick="setStudioFamily('Tiernos')" id="stFamTiernos" class="st-fam-btn px-3 py-2 min-h-[38px] rounded-full text-xs font-bold bg-stone-100 text-stone-700 shrink-0">Tiernos (T01-T20)</button>
               </div>
-
-              <!-- Mini Grid of Designs -->
-              <div id="studioDesignGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-[245px] overflow-y-auto pr-1">
-                <!-- Populated by JS -->
-              </div>
+              <div id="studioDesignGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-[245px] overflow-y-auto pr-1"></div>
             </div>
 
-            <!-- STEP 3: PLACEMENT -->
             <div id="studioPanel3" class="studio-panel hidden space-y-3.5">
               <div>
                 <span class="text-xs font-extrabold uppercase tracking-wider text-red-700">Paso 3</span>
                 <h3 class="font-festive text-xl font-bold text-stone-900">Ubicación del estampado</h3>
                 <p class="text-xs sm:text-sm text-stone-500">Usa la ubicación sugerida del catálogo o cámbiala a tu gusto.</p>
               </div>
-              <div id="studioPlacementGrid" class="grid grid-cols-2 gap-2 pt-1">
-                <!-- Populated by JS -->
-              </div>
+              <div id="studioPlacementGrid" class="grid grid-cols-2 gap-2 pt-1"></div>
             </div>
 
-            <!-- STEP 4: OPTIONAL CHILD NAME -->
             <div id="studioPanel4" class="studio-panel hidden space-y-3.5">
               <div>
                 <span class="text-xs font-extrabold uppercase tracking-wider text-red-700">Paso 4 · Opcional</span>
                 <h3 class="font-festive text-xl font-bold text-stone-900">Personaliza con el nombre del niño/a</h3>
                 <p class="text-xs sm:text-sm text-stone-500">Déjalo en blanco si prefieres la franela solo con el diseño.</p>
               </div>
-
               <div>
                 <label class="block text-xs font-bold text-stone-700 mb-1.5">Nombre a estampar (máx. 16 letras)</label>
                 <div class="relative">
@@ -302,22 +228,20 @@
                   <button onclick="clearStudioName()" id="clearStudioNameBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-400 hover:text-red-700 px-2 py-1">Limpiar</button>
                 </div>
               </div>
-
               <div class="grid grid-cols-2 gap-2.5">
                 <div>
                   <label class="block text-xs font-bold text-stone-700 mb-1.5">Posición del nombre</label>
-                  <select id="studioNamePos" onchange="setStudioNamePos(this.value)"
-                    class="w-full px-3 py-2.5 rounded-xl border border-stone-300 text-xs font-bold bg-white focus:outline-none focus:border-red-700">
-                    <option value="chest-right">Pecho derecho</option>
-                    <option value="center-top">Centro arriba</option>
-                    <option value="bottom-opposite">Inferior opuesto</option>
-                    <option value="under-motif">Debajo del motivo</option>
+                  <select id="studioNamePos" onchange="setStudioNamePos(this.value)" class="w-full px-3 py-2.5 rounded-xl border border-stone-300 text-xs font-bold bg-white focus:outline-none focus:border-red-700">
+                    <option value="center-chest">Centro pecho</option>
+                    <option value="top-left">Esquina superior izquierda</option>
+                    <option value="top-right">Esquina superior derecha</option>
+                    <option value="bottom-left">Esquina inferior izquierda</option>
+                    <option value="bottom-right">Esquina inferior derecha</option>
                   </select>
                 </div>
                 <div>
                   <label class="block text-xs font-bold text-stone-700 mb-1.5">Estilo de letra</label>
-                  <select id="studioNameFont" onchange="setStudioNameFont(this.value)"
-                    class="w-full px-3 py-2.5 rounded-xl border border-stone-300 text-xs font-bold bg-white focus:outline-none focus:border-red-700">
+                  <select id="studioNameFont" onchange="setStudioNameFont(this.value)" class="w-full px-3 py-2.5 rounded-xl border border-stone-300 text-xs font-bold bg-white focus:outline-none focus:border-red-700">
                     <option value="festive">Navideña redondeada</option>
                     <option value="clean">Moderna limpia</option>
                   </select>
@@ -325,18 +249,13 @@
               </div>
             </div>
 
-            <!-- STEP 5: SIZE & ADD TO CART -->
             <div id="studioPanel5" class="studio-panel hidden space-y-4">
               <div>
                 <span class="text-xs font-extrabold uppercase tracking-wider text-red-700">Paso 5</span>
                 <h3 class="font-festive text-xl font-bold text-stone-900">Elige la talla infantil</h3>
                 <p class="text-xs sm:text-sm text-stone-500">Tallas disponibles de la 4 a la 16 · <strong class="text-stone-900">$15 por franela</strong>.</p>
               </div>
-
-              <div id="studioSizeGrid" class="grid grid-cols-4 sm:grid-cols-7 gap-2">
-                <!-- Populated by JS -->
-              </div>
-
+              <div id="studioSizeGrid" class="grid grid-cols-4 sm:grid-cols-7 gap-2"></div>
               <div class="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs text-amber-950 space-y-1">
                 <p class="font-extrabold">Resumen de tu franela:</p>
                 <p id="studioFinalDetail" class="font-medium"></p>
@@ -344,62 +263,32 @@
             </div>
           </div>
 
-          <!-- Wizard Footer Buttons -->
           <div class="pt-5 mt-5 border-t border-stone-100 flex items-center justify-between gap-2.5">
-            <button id="studioPrevBtn" onclick="prevStudioStep()"
-              class="px-4 py-3 min-h-[46px] rounded-2xl border border-stone-200 text-stone-700 font-bold text-xs sm:text-sm hover:bg-stone-50 active:scale-95 transition disabled:opacity-40 disabled:pointer-events-none">
-              ← Anterior
-            </button>
-
-            <button id="studioNextBtn" onclick="nextStudioStep()"
-              class="flex-1 sm:flex-initial px-6 py-3 min-h-[46px] rounded-2xl bg-stone-900 hover:bg-stone-800 active:scale-95 text-white font-bold text-xs sm:text-sm transition">
-              Siguiente paso →
-            </button>
-
-            <button id="studioAddBtn" onclick="addStudioToCart()"
-              class="hidden flex-1 px-5 py-3 min-h-[46px] rounded-2xl bg-red-700 hover:bg-red-800 active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-md transition">
-              + Agregar al pedido ($15)
-            </button>
+            <button id="studioPrevBtn" onclick="prevStudioStep()" class="px-4 py-3 min-h-[46px] rounded-2xl border border-stone-200 text-stone-700 font-bold text-xs sm:text-sm hover:bg-stone-50 active:scale-95 transition disabled:opacity-40 disabled:pointer-events-none">← Anterior</button>
+            <button id="studioNextBtn" onclick="nextStudioStep()" class="flex-1 sm:flex-initial px-6 py-3 min-h-[46px] rounded-2xl bg-stone-900 hover:bg-stone-800 active:scale-95 text-white font-bold text-xs sm:text-sm transition">Siguiente paso →</button>
+            <button id="studioAddBtn" onclick="addStudioToCart()" class="hidden flex-1 px-5 py-3 min-h-[46px] rounded-2xl bg-red-700 hover:bg-red-800 active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-md transition">+ Agregar al pedido ($15)</button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Catalog Filter Tabs -->
   <section id="catalogo" class="max-w-7xl mx-auto px-3 sm:px-6 pt-4 pb-16">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
       <div>
         <h2 class="font-festive text-2xl sm:text-3xl font-bold text-stone-900">Catálogo completo</h2>
         <p class="text-xs sm:text-sm text-stone-500">Toca cualquier franela para personalizar talla, ubicación o nombre</p>
       </div>
-
       <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
-        <button onclick="setFamilyFilter('all')" id="tab-all"
-          class="family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-red-700 text-white shadow-xs">
-          Todos (<span id="count-all">52</span>)
-        </button>
-        <button onclick="setFamilyFilter('Asomados')" id="tab-Asomados"
-          class="family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">
-          Asomados (<span id="count-Asomados">16</span>)
-        </button>
-        <button onclick="setFamilyFilter('Clasicos')" id="tab-Clasicos"
-          class="family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">
-          Clásicos (<span id="count-Clasicos">16</span>)
-        </button>
-        <button onclick="setFamilyFilter('Tiernos')" id="tab-Tiernos"
-          class="family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">
-          Tiernos (<span id="count-Tiernos">20</span>)
-        </button>
+        <button onclick="setFamilyFilter('all')" id="tab-all" class="family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-red-700 text-white shadow-xs">Todos (<span id="count-all">52</span>)</button>
+        <button onclick="setFamilyFilter('Asomados')" id="tab-Asomados" class="family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">Asomados (<span id="count-Asomados">16</span>)</button>
+        <button onclick="setFamilyFilter('Clasicos')" id="tab-Clasicos" class="family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">Clásicos (<span id="count-Clasicos">16</span>)</button>
+        <button onclick="setFamilyFilter('Tiernos')" id="tab-Tiernos" class="family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">Tiernos (<span id="count-Tiernos">20</span>)</button>
       </div>
     </div>
 
-    <!-- Product Grid -->
-    <div id="catalogGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-      <!-- Cards injected by JS -->
-    </div>
+    <div id="catalogGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5"></div>
 
-    <!-- Empty Search State -->
     <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl border border-stone-200">
       <p class="font-festive text-xl text-stone-700 font-bold">No encontramos ese motivo</p>
       <p class="text-sm text-stone-500 mt-1">Prueba buscando otro código (ej. A01, C05, T12) o limpia el filtro.</p>
@@ -407,12 +296,9 @@
     </div>
   </section>
 
-  <!-- Minimal Footer -->
   <footer class="border-t border-stone-200 bg-white py-6 px-4 text-center text-xs text-stone-500 space-y-2">
     <p class="font-bold text-stone-700">Viste el Espíritu de la Navidad · Franelas para niños Tallas 4 a 16 ($15)</p>
-    <button onclick="toggleDiagnostics()" class="text-[11px] text-stone-400 hover:text-stone-700 underline">
-      Verificar conexión de fotos
-    </button>
+    <button onclick="toggleDiagnostics()" class="text-[11px] text-stone-400 hover:text-stone-700 underline">Verificar conexión de fotos</button>
     <div id="diagBox" class="hidden max-w-2xl mx-auto mt-3 p-4 rounded-2xl bg-stone-900 text-stone-100 text-left font-mono text-[11px] space-y-1.5 overflow-x-auto">
       <p id="diagStatus">Estado: Conectando con Apps Script...</p>
       <p id="diagRow1">Fila A01: ...</p>
@@ -420,7 +306,6 @@
     </div>
   </footer>
 
-  <!-- Quick Customize Modal (Bottom Sheet on Mobile) -->
   <div id="productModal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4">
     <div class="modal-sheet bg-white w-full max-w-2xl rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-y-auto border border-stone-200">
       <div class="sticky top-0 z-10 bg-white/95 backdrop-blur-xs px-5 py-3.5 border-b border-stone-100 flex items-center justify-between">
@@ -432,15 +317,12 @@
       </div>
 
       <div class="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <!-- Preview -->
         <div class="bg-stone-100 rounded-2xl p-4 flex flex-col items-center justify-center">
           <div id="modalShirtPreview" class="w-48 sm:w-56 aspect-[5/6] relative flex items-center justify-center"></div>
           <span id="modalPriceTag" class="mt-2 font-festive text-xl font-bold text-red-800">$15</span>
         </div>
 
-        <!-- Options -->
         <div class="space-y-4">
-          <!-- Color -->
           <div>
             <label class="block text-xs font-extrabold uppercase tracking-wider text-stone-500 mb-1.5">1. Color de franela</label>
             <div class="grid grid-cols-2 gap-2">
@@ -453,17 +335,14 @@
             </div>
           </div>
 
-          <!-- Size -->
           <div>
             <label class="block text-xs font-extrabold uppercase tracking-wider text-stone-500 mb-1.5">2. Talla (4 a 16)</label>
             <div id="modalSizeGrid" class="grid grid-cols-4 gap-1.5"></div>
           </div>
 
-          <!-- Placement -->
           <div>
             <label class="block text-xs font-extrabold uppercase tracking-wider text-stone-500 mb-1.5">3. Ubicación del estampado</label>
-            <select id="modalPlacementSelect" onchange="setModalPlacement(this.value)"
-              class="w-full px-3 py-2.5 rounded-xl border border-stone-300 text-xs font-bold bg-white focus:outline-none focus:border-red-700">
+            <select id="modalPlacementSelect" onchange="setModalPlacement(this.value)" class="w-full px-3 py-2.5 rounded-xl border border-stone-300 text-xs font-bold bg-white focus:outline-none focus:border-red-700">
               <option value="suggested">Sugerida del catálogo</option>
               <option value="chest-left">Pecho izquierdo (bolsillo)</option>
               <option value="center">Centro pecho</option>
@@ -473,16 +352,24 @@
             </select>
           </div>
 
-          <!-- Optional Name -->
-          <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200/80 space-y-2">
+          <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200/80 space-y-2.5">
             <label class="block text-xs font-extrabold text-stone-700">4. Nombre del niño/a (opcional)</label>
             <input id="modalChildName" type="text" maxlength="16" placeholder="Escribe un nombre..."
               oninput="setModalName(this.value)"
               class="w-full px-3 py-2 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:border-red-700" />
+            <div id="modalNamePosWrap" class="hidden pt-0.5">
+              <label class="block text-[11px] font-bold text-stone-500 mb-1">Ubicación del nombre</label>
+              <select id="modalNamePosSelect" onchange="setModalNamePos(this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:border-red-700">
+                <option value="center-chest">Centro pecho</option>
+                <option value="top-left">Esquina superior izquierda</option>
+                <option value="top-right">Esquina superior derecha</option>
+                <option value="bottom-left">Esquina inferior izquierda</option>
+                <option value="bottom-right">Esquina inferior derecha</option>
+              </select>
+            </div>
           </div>
 
-          <button onclick="addModalToCart()"
-            class="w-full py-3.5 min-h-[48px] rounded-2xl bg-red-700 hover:bg-red-800 active:scale-95 text-white font-extrabold text-sm shadow-md transition">
+          <button onclick="addModalToCart()" class="w-full py-3.5 min-h-[48px] rounded-2xl bg-red-700 hover:bg-red-800 active:scale-95 text-white font-extrabold text-sm shadow-md transition">
             + Agregar al pedido ($15)
           </button>
         </div>
@@ -490,7 +377,6 @@
     </div>
   </div>
 
-  <!-- Cart Drawer -->
   <div id="cartDrawer" class="fixed inset-0 z-50 hidden justify-end bg-black/60 backdrop-blur-xs">
     <div class="drawer-full bg-white w-full max-w-md flex flex-col shadow-2xl">
       <div class="px-5 py-4 border-b border-stone-200 flex items-center justify-between bg-stone-50" style="padding-top: calc(1rem + var(--safe-top));">
@@ -501,16 +387,13 @@
         <button onclick="toggleCart(false)" class="w-9 h-9 rounded-full bg-white border border-stone-200 flex items-center justify-center text-stone-700 font-bold">✕</button>
       </div>
 
-      <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
-        <!-- Cart items rendered here -->
-      </div>
+      <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
 
       <div class="p-4 border-t border-stone-200 bg-stone-50 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-sm font-bold text-stone-600">Total estimado:</span>
           <span id="cartTotalAmount" class="font-festive text-2xl font-bold text-red-800">$0</span>
         </div>
-
         <button id="whatsappOrderBtn" onclick="sendWhatsAppOrder()"
           class="w-full py-3.5 min-h-[50px] rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 transition disabled:opacity-40 disabled:pointer-events-none">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -523,9 +406,6 @@
   </div>
 
   <script>
-    // =========================================================================
-    // CONFIGURACIÓN DE GOOGLE APPS SCRIPT Y WHATSAPP
-    // =========================================================================
     const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTPOfNntDoIVgWDoWgvje1qvH-JwUrgK_aFBay7CyEGrBMzAH8h_bqKlKXnyHgFQVb/exec";
     const WHATSAPP_PHONE = "584242074584";
     const SIZES = ["4", "6", "8", "10", "12", "14", "16"];
@@ -602,58 +482,58 @@
     let searchQuery = "";
     let cart = [];
 
+    const NAME_POS_OPTIONS = [
+      { id: "center-chest", label: "Centro pecho" },
+      { id: "top-left", label: "Esquina superior izquierda" },
+      { id: "top-right", label: "Esquina superior derecha" },
+      { id: "bottom-left", label: "Esquina inferior izquierda" },
+      { id: "bottom-right", label: "Esquina inferior derecha" }
+    ];
+
     let studio = {
-      step: 1,
-      color: "white",
-      family: "Asomados",
-      code: "A01",
-      placement: "suggested",
-      childName: "",
-      namePos: "chest-right",
-      nameFont: "festive",
-      size: "8"
+      step: 1, color: "white", family: "Asomados", code: "A01",
+      placement: "suggested", childName: "", namePos: "center-chest", nameFont: "festive", size: "8"
     };
 
-    let modalState = {
-      code: "A01",
-      color: "white",
-      size: "8",
-      placement: "suggested",
-      childName: ""
-    };
+    let modalState = { code: "A01", color: "white", size: "8", placement: "suggested", childName: "", namePos: "center-chest" };
 
-    function toggleDiagnostics() {
-      document.getElementById("diagBox").classList.toggle("hidden");
+    function toggleDiagnostics() { document.getElementById("diagBox").classList.toggle("hidden"); }
+
+    function getImageCandidates(rawUrl, code) {
+      const clean = (rawUrl || "").trim();
+      const upper = (code || "").toUpperCase().trim();
+      const lower = upper.toLowerCase();
+      const list = [];
+
+      if (clean) {
+        if (!/^https?:\/\//i.test(clean)) {
+          list.push(clean.startsWith("./") || clean.startsWith("/") ? clean : `./${clean}`);
+        } else {
+          const driveMatch = clean.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|docs\.google\.com\/file\/d\/)([a-zA-Z0-9_-]{15,})/);
+          if (driveMatch && driveMatch[1]) {
+            const id = driveMatch[1];
+            list.push(`https://lh3.googleusercontent.com/d/${id}=w600`, `https://drive.google.com/thumbnail?id=${id}&sz=w600`);
+          } else {
+            list.push(clean);
+          }
+        }
+      }
+      if (upper) list.push(`./${upper}.png`, `./${lower}.png`, `./${upper}.jpg`, `./${lower}.jpg`);
+      return [...new Set(list)];
     }
 
-    // =========================================================================
-    // RESOLVER DE IMÁGENES (GITHUB LOCAL, GOOGLE DRIVE O URL EXTERNA)
-    // =========================================================================
-    function normalizeImageUrl(rawUrl, code) {
-      const clean = (rawUrl || "").trim();
-
-      if (!clean) {
-        return {
-          primary: code ? `./${code}.png` : "",
-          fallback: code ? `./${code}.jpg` : ""
-        };
-      }
-
-      if (!/^https?:\/\//i.test(clean)) {
-        const relativePath = clean.startsWith("./") || clean.startsWith("/") ? clean : `./${clean}`;
-        return { primary: relativePath, fallback: "" };
-      }
-
-      const driveMatch = clean.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|docs\.google\.com\/file\/d\/)([a-zA-Z0-9_-]{15,})/);
-      if (driveMatch && driveMatch[1]) {
-        const id = driveMatch[1];
-        return {
-          primary: `https://lh3.googleusercontent.com/d/${id}=w600`,
-          fallback: `https://drive.google.com/thumbnail?id=${id}&sz=w600`
-        };
-      }
-
-      return { primary: clean, fallback: "" };
+    function handleImageFallback(imgEl) {
+      try {
+        const candidates = JSON.parse(imgEl.dataset.candidates || "[]");
+        const nextIdx = (parseInt(imgEl.dataset.idx || "0", 10)) + 1;
+        if (nextIdx < candidates.length) {
+          imgEl.dataset.idx = String(nextIdx);
+          imgEl.src = candidates[nextIdx];
+          return;
+        }
+      } catch (e) {}
+      imgEl.style.display = "none";
+      if (imgEl.nextElementSibling) imgEl.nextElementSibling.style.display = "block";
     }
 
     function normalizeFamily(raw) {
@@ -664,57 +544,45 @@
       return "Asomados";
     }
 
-    // =========================================================================
-    // SINCRONIZACIÓN DIRECTA DESDE GOOGLE APPS SCRIPT (JSON)
-    // =========================================================================
     async function loadCatalogFromAppsScript() {
       const diagStatus = document.getElementById("diagStatus");
       const diagRow1 = document.getElementById("diagRow1");
       const diagImgTest = document.getElementById("diagImgTest");
 
       try {
-        const url = `${GOOGLE_APPS_SCRIPT_URL}?t=${Date.now()}`;
-        const res = await fetch(url, { redirect: "follow" });
+        const res = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?t=${Date.now()}`, { redirect: "follow" });
         if (!res.ok) throw new Error("Error HTTP " + res.status);
-
         const data = await res.json();
-        if (!Array.isArray(data) || data.length === 0) {
-          throw new Error("Apps Script devolvió una lista vacía.");
-        }
+        if (!Array.isArray(data) || data.length === 0) throw new Error("Lista vacía");
 
         const parsedItems = [];
         for (const row of data) {
-          const code = (row.codigo || "").toUpperCase().trim();
+          const code = String(row.codigo || "").toUpperCase().trim();
           if (!code) continue;
-
-          const activeVal = (row.activo || "si").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+          const activeVal = String(row.activo || "si").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
           if (activeVal === "no" || activeVal === "false" || activeVal === "0") continue;
 
           const fallbackItem = DEFAULT_CATALOG.find(d => d.code === code);
-          const name = (row.nombre || (fallbackItem ? fallbackItem.name : code)).trim();
+          const name = String(row.nombre || (fallbackItem ? fallbackItem.name : code)).trim();
           const family = row.familia ? normalizeFamily(row.familia) : (fallbackItem ? fallbackItem.family : "Asomados");
-          const placement = row.ubicacion ? row.ubicacion.trim() : (fallbackItem ? fallbackItem.placement : "chest-left");
-          const priceNum = parseFloat(String(row.precio || "15").replace(/[^0-9.]/g, "")) || 15;
-          const imageUrl = (row.imagen_url || "").trim();
+          const placement = row.ubicacion ? String(row.ubicacion).trim() : (fallbackItem ? fallbackItem.placement : "chest-left");
+          const priceNum = parseFloat(String(row.precio || "15").replace(/[\u0300-\u036f]/g, "")) || 15;
+          const imageUrl = String(row.imagen_url || "").trim();
 
           parsedItems.push({ code, name, family, placement, price: priceNum, imageUrl });
         }
 
-        diagStatus.textContent = `✅ Apps Script conectado (${parsedItems.length} productos recibidos).`;
+        diagStatus.textContent = `✅ Apps Script conectado (${parsedItems.length} productos).`;
         if (parsedItems.length > 0) {
           const first = parsedItems[0];
-          const resolved = normalizeImageUrl(first.imageUrl, first.code);
-          diagRow1.textContent = `Fila 1 (${first.code}): imagen_url = "${first.imageUrl}" -> Ruta usada: "${resolved.primary}"`;
+          const candidates = getImageCandidates(first.imageUrl, first.code);
+          diagRow1.textContent = `Fila 1 (${first.code}): ${candidates.join(" -> ")}`;
 
           const testImg = new Image();
           testImg.referrerPolicy = "no-referrer";
-          testImg.onload = () => {
-            diagImgTest.textContent = `✅ Imagen "${resolved.primary}" cargada con éxito (${testImg.width}x${testImg.height}px).`;
-          };
-          testImg.onerror = () => {
-            diagImgTest.textContent = `❌ ERROR cargando "${resolved.primary}". Verifica que el archivo exista con ese nombre exacto en GitHub o que el enlace sea público.`;
-          };
-          testImg.src = resolved.primary;
+          testImg.onload = () => { diagImgTest.textContent = `✅ "${candidates[0]}" cargada (${testImg.width}x${testImg.height}px).`; };
+          testImg.onerror = () => { diagImgTest.textContent = `⚠️ Falló "${candidates[0]}", usando respaldo.`; };
+          testImg.src = candidates[0];
 
           catalog = parsedItems;
           if (!catalog.some(item => item.code === studio.code)) {
@@ -724,185 +592,121 @@
           renderAll();
         }
       } catch (err) {
-        console.warn("Usando catálogo local de respaldo:", err);
         diagStatus.textContent = `❌ Error leyendo Apps Script: ${err.message}`;
-        diagRow1.textContent = "Verifica que en Apps Script elegiste 'Quién tiene acceso: Cualquier usuario'.";
       }
     }
 
-    // =========================================================================
-    // SVG ARTWORK & T-SHIRT RENDER ENGINE (SILUETA 300x360 + CLIP-PATH)
-    // =========================================================================
     function getMotifFallbackSVG(item) {
-      const fam = item.family;
-      if (fam === "Asomados") {
-        return `
-          <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-xs">
-            <path d="M22 48 C22 24, 78 24, 78 48 Z" fill="#DC2626" stroke="#1F2937" stroke-width="3"/>
-            <rect x="18" y="44" width="64" height="12" rx="6" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
-            <circle cx="82" cy="36" r="8" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
-            <rect x="26" y="54" width="48" height="24" rx="10" fill="#FDBA74" stroke="#1F2937" stroke-width="3"/>
-            <circle cx="41" cy="63" r="3.5" fill="#1F2937"/>
-            <circle cx="59" cy="63" r="3.5" fill="#1F2937"/>
-            <circle cx="50" cy="70" r="5" fill="#F87171" stroke="#1F2937" stroke-width="2.5"/>
-            <path d="M20 75 Q50 96 80 75" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
-          </svg>`;
+      if (item.family === "Asomados") {
+        return `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M22 48 C22 24, 78 24, 78 48 Z" fill="#DC2626" stroke="#1F2937" stroke-width="3"/><rect x="18" y="44" width="64" height="12" rx="6" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/><circle cx="82" cy="36" r="8" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/><rect x="26" y="54" width="48" height="24" rx="10" fill="#FDBA74" stroke="#1F2937" stroke-width="3"/><circle cx="41" cy="63" r="3.5" fill="#1F2937"/><circle cx="59" cy="63" r="3.5" fill="#1F2937"/><circle cx="50" cy="70" r="5" fill="#F87171" stroke="#1F2937" stroke-width="2.5"/><path d="M20 75 Q50 96 80 75" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/></svg>`;
       }
-      if (fam === "Clasicos") {
-        return `
-          <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-xs">
-            <circle cx="50" cy="52" r="36" fill="#FEF3C7" stroke="#D97706" stroke-width="3"/>
-            <polygon points="50,20 26,64 74,64" fill="#15803D" stroke="#14532D" stroke-width="3" stroke-linejoin="round"/>
-            <polygon points="50,34 30,74 70,74" fill="#16A34A" stroke="#14532D" stroke-width="3" stroke-linejoin="round"/>
-            <polygon points="50,11 53,18 61,18 55,23 57,30 50,25 43,30 45,23 39,18 47,18" fill="#FBBF24" stroke="#92400E" stroke-width="2"/>
-            <circle cx="44" cy="54" r="3.5" fill="#EF4444"/>
-            <circle cx="57" cy="62" r="3.5" fill="#FBBF24"/>
-            <rect x="44" y="74" width="12" height="10" fill="#78350F"/>
-          </svg>`;
+      if (item.family === "Clasicos") {
+        return `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="52" r="36" fill="#FEF3C7" stroke="#D97706" stroke-width="3"/><polygon points="50,20 26,64 74,64" fill="#15803D" stroke="#14532D" stroke-width="3"/><polygon points="50,34 30,74 70,74" fill="#16A34A" stroke="#14532D" stroke-width="3"/><rect x="44" y="74" width="12" height="10" fill="#78350F"/></svg>`;
       }
-      return `
-        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-xs">
-          <circle cx="50" cy="56" r="26" fill="#D97706" stroke="#1F2937" stroke-width="3"/>
-          <path d="M34 34 L26 16 M26 24 L20 22 M30 20 L34 15" stroke="#78350F" stroke-width="4" stroke-linecap="round"/>
-          <path d="M66 34 L74 16 M74 24 L80 22 M70 20 L66 15" stroke="#78350F" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="41" cy="52" r="4" fill="#1F2937"/>
-          <circle cx="59" cy="52" r="4" fill="#1F2937"/>
-          <circle cx="50" cy="62" r="6.5" fill="#DC2626" stroke="#1F2937" stroke-width="2.5"/>
-          <rect x="32" y="78" width="36" height="10" rx="5" fill="#DC2626" stroke="#1F2937" stroke-width="2.5"/>
-        </svg>`;
+      return `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="56" r="26" fill="#D97706" stroke="#1F2937" stroke-width="3"/><circle cx="41" cy="52" r="4" fill="#1F2937"/><circle cx="59" cy="52" r="4" fill="#1F2937"/><circle cx="50" cy="62" r="6.5" fill="#DC2626" stroke="#1F2937" stroke-width="2.5"/><rect x="32" y="78" width="36" height="10" rx="5" fill="#DC2626" stroke="#1F2937" stroke-width="2.5"/></svg>`;
     }
 
-    // Geometría de la franela (viewBox="0 0 300 360", proporción exacta 5:6):
-    // Borde izquierdo del torso = x:56 (18.7%) | Borde derecho del torso = x:244 (right: 18.7%)
-    // Ancho interior del torso = 62.6% | Ruedo inferior = y:338 (bottom: 6.1%)
     function getDesignLayout(item, placementOverride) {
       const code = (item.code || "").toUpperCase();
       const useSuggested = !placementOverride || placementOverride === "suggested";
 
       if (useSuggested) {
         switch (code) {
-          // --- ASOMADOS (A01 - A16) ---
-          case "A01":
-            return { boxClass: "bottom-[6.1%] left-[18.7%] w-[36%] h-[33%]", imgAlign: "object-contain object-left-bottom" };
-          case "A02":
-            return { boxClass: "bottom-[6.1%] left-[18.7%] w-[34%] h-[23%]", imgAlign: "object-contain object-left-bottom" };
-          case "A03":
-            return { boxClass: "top-[31%] right-[19%] w-[26%] h-[16%]", imgAlign: "object-contain object-bottom" };
-          case "A04":
-            return { boxClass: "bottom-[6.1%] right-[18.7%] w-[35%] h-[24%]", imgAlign: "object-contain object-right-bottom" };
-          case "A05":
-            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[48%] h-[24%]", imgAlign: "object-contain object-bottom" };
-          case "A06":
-            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[50%] h-[25%]", imgAlign: "object-contain object-bottom" };
-          case "A07":
-            return { boxClass: "bottom-[6.1%] right-[18.7%] w-[32%] h-[23%]", imgAlign: "object-contain object-right-bottom" };
-          case "A08":
-            return { boxClass: "bottom-[6.1%] right-[18.7%] w-[35%] h-[25%]", imgAlign: "object-contain object-right-bottom" };
-          case "A09":
-            return { boxClass: "top-[38%] left-[18.7%] w-[31%] h-[42%]", imgAlign: "object-contain object-left" };
-          case "A10":
-            return { boxClass: "top-[36%] right-[18.7%] w-[31%] h-[46%]", imgAlign: "object-contain object-right" };
-          case "A11":
-            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[54%] h-[23%]", imgAlign: "object-contain object-bottom" };
-          case "A12":
-            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[54%] h-[23%]", imgAlign: "object-contain object-bottom" };
-          case "A13":
-            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[38%] h-[24%]", imgAlign: "object-contain object-bottom" };
-          case "A14":
-            return { boxClass: "top-[36%] right-[18.7%] w-[30%] h-[45%]", imgAlign: "object-contain object-right" };
-          case "A15":
-            return { boxClass: "top-[35%] right-[18.7%] w-[31%] h-[46%]", imgAlign: "object-contain object-right" };
-          case "A16":
-            return { boxClass: "top-[38%] left-[18.7%] w-[29%] h-[44%]", imgAlign: "object-contain object-left" };
+          // --- ASOMADOS AGRANDADOS Y AL BORDE EXACTO ---
+          case "A01": return { boxClass: "bottom-[5.6%] left-[18.2%] w-[47%] h-[44%]", imgAlign: "object-contain object-left-bottom" };
+          case "A02": return { boxClass: "bottom-[5.6%] left-[18.2%] w-[45%] h-[32%]", imgAlign: "object-contain object-left-bottom" };
+          case "A03": return { boxClass: "top-[28%] right-[19%] w-[33%] h-[21%]", imgAlign: "object-contain object-bottom" };
+          case "A04": return { boxClass: "bottom-[5.6%] right-[18.2%] w-[46%] h-[33%]", imgAlign: "object-contain object-right-bottom" };
+          case "A05": return { boxClass: "bottom-[5.6%] left-1/2 -translate-x-1/2 w-[58%] h-[31%]", imgAlign: "object-contain object-bottom" };
+          case "A06": return { boxClass: "bottom-[5.6%] left-1/2 -translate-x-1/2 w-[60%] h-[32%]", imgAlign: "object-contain object-bottom" };
+          case "A07": return { boxClass: "bottom-[5.6%] right-[18.2%] w-[43%] h-[32%]", imgAlign: "object-contain object-right-bottom" };
+          case "A08": return { boxClass: "bottom-[5.6%] right-[18.2%] w-[46%] h-[34%]", imgAlign: "object-contain object-right-bottom" };
+          case "A09": return { boxClass: "top-[33%] left-[18.2%] w-[42%] h-[53%]", imgAlign: "object-contain object-left" };
+          case "A10": return { boxClass: "top-[31%] right-[18.2%] w-[42%] h-[56%]", imgAlign: "object-contain object-right" };
+          case "A11": return { boxClass: "bottom-[5.6%] left-1/2 -translate-x-1/2 w-[61%] h-[30%]", imgAlign: "object-contain object-bottom" };
+          case "A12": return { boxClass: "bottom-[5.6%] left-1/2 -translate-x-1/2 w-[61%] h-[30%]", imgAlign: "object-contain object-bottom" };
+          case "A13": return { boxClass: "bottom-[5.6%] left-1/2 -translate-x-1/2 w-[49%] h-[32%]", imgAlign: "object-contain object-bottom" };
+          case "A14": return { boxClass: "top-[31%] right-[18.2%] w-[41%] h-[55%]", imgAlign: "object-contain object-right" };
+          case "A15": return { boxClass: "top-[30%] right-[18.2%] w-[42%] h-[56%]", imgAlign: "object-contain object-right" };
+          case "A16": return { boxClass: "top-[33%] left-[18.2%] w-[40%] h-[55%]", imgAlign: "object-contain object-left" };
 
-          // --- CLÁSICOS ILUSTRADOS (C01 - C16) ---
-          case "C01":
-            return { boxClass: "top-[24%] right-[21%] w-[28%] h-[24%]", imgAlign: "object-contain" };
-          case "C02":
-          case "C03":
-          case "C06":
-          case "C07":
-          case "C08":
-          case "C09":
-          case "C11":
-          case "C12":
-          case "C13":
-          case "C14":
-          case "C15":
+          case "C01": return { boxClass: "top-[24%] right-[21%] w-[28%] h-[24%]", imgAlign: "object-contain" };
+          case "C02": case "C03": case "C06": case "C07": case "C08": case "C09":
+          case "C11": case "C12": case "C13": case "C14": case "C15":
             return { boxClass: "bottom-[7.5%] left-[20%] w-[45%] h-[36%]", imgAlign: "object-contain object-left-bottom" };
-          case "C04":
-          case "C05":
-          case "C10":
-          case "C16":
+          case "C04": case "C05": case "C10": case "C16":
             return { boxClass: "bottom-[7.5%] right-[20%] w-[45%] h-[36%]", imgAlign: "object-contain object-right-bottom" };
 
-          // --- TIERNOS (T01 - T20) ---
-          case "T01":
-            return { boxClass: "top-[27%] right-[19.5%] w-[35%] h-[18%]", imgAlign: "object-contain" };
-          case "T10":
-            return { boxClass: "top-[25%] right-[20%] w-[34%] h-[21%]", imgAlign: "object-contain" };
-          case "T04":
-          case "T14":
-          case "T18":
+          case "T01": return { boxClass: "top-[27%] right-[19.5%] w-[35%] h-[18%]", imgAlign: "object-contain" };
+          case "T10": return { boxClass: "top-[25%] right-[20%] w-[34%] h-[21%]", imgAlign: "object-contain" };
+          case "T04": case "T14": case "T18":
             return { boxClass: "bottom-[7.5%] right-[21%] w-[33%] h-[32%]", imgAlign: "object-contain object-right-bottom" };
-          case "T08":
-          case "T17":
+          case "T08": case "T17":
             return { boxClass: "bottom-[7.5%] left-[21%] w-[33%] h-[32%]", imgAlign: "object-contain object-left-bottom" };
           default:
-            if (item.family === "Tiernos") {
-              return { boxClass: "top-[24%] right-[22%] w-[26%] h-[23%]", imgAlign: "object-contain" };
-            }
+            if (item.family === "Tiernos") return { boxClass: "top-[24%] right-[22%] w-[26%] h-[23%]", imgAlign: "object-contain" };
             break;
         }
       }
 
       const resolved = useSuggested ? item.placement : placementOverride;
+      const isAsomado = item.family === "Asomados";
+
       switch (resolved) {
         case "chest-left":
-          return { boxClass: "top-[24%] right-[22%] w-[26%] h-[23%]", imgAlign: "object-contain" };
+          return isAsomado
+            ? { boxClass: "top-[26%] right-[19%] w-[34%] h-[26%]", imgAlign: "object-contain" }
+            : { boxClass: "top-[24%] right-[22%] w-[26%] h-[23%]", imgAlign: "object-contain" };
         case "center":
-          return { boxClass: "top-[32%] left-1/2 -translate-x-1/2 w-[42%] h-[34%]", imgAlign: "object-contain" };
+          return isAsomado
+            ? { boxClass: "top-[30%] left-1/2 -translate-x-1/2 w-[52%] h-[42%]", imgAlign: "object-contain" }
+            : { boxClass: "top-[32%] left-1/2 -translate-x-1/2 w-[42%] h-[34%]", imgAlign: "object-contain" };
         case "bottom-left":
-          return { boxClass: "bottom-[7%] left-[19.5%] w-[40%] h-[33%]", imgAlign: "object-contain object-left-bottom" };
+          return isAsomado
+            ? { boxClass: "bottom-[5.6%] left-[18.2%] w-[46%] h-[42%]", imgAlign: "object-contain object-left-bottom" }
+            : { boxClass: "bottom-[7%] left-[19.5%] w-[40%] h-[33%]", imgAlign: "object-contain object-left-bottom" };
         case "bottom-right":
-          return { boxClass: "bottom-[7%] right-[19.5%] w-[40%] h-[33%]", imgAlign: "object-contain object-right-bottom" };
+          return isAsomado
+            ? { boxClass: "bottom-[5.6%] right-[18.2%] w-[46%] h-[42%]", imgAlign: "object-contain object-right-bottom" }
+            : { boxClass: "bottom-[7%] right-[19.5%] w-[40%] h-[33%]", imgAlign: "object-contain object-right-bottom" };
         case "bottom-center":
-          return { boxClass: "bottom-[6.5%] left-1/2 -translate-x-1/2 w-[48%] h-[25%]", imgAlign: "object-contain object-bottom" };
-        case "side-left":
-          return { boxClass: "top-[38%] left-[19%] w-[30%] h-[42%]", imgAlign: "object-contain object-left" };
-        case "side-right":
-          return { boxClass: "top-[38%] right-[19%] w-[30%] h-[42%]", imgAlign: "object-contain object-right" };
+          return isAsomado
+            ? { boxClass: "bottom-[5.6%] left-1/2 -translate-x-1/2 w-[58%] h-[32%]", imgAlign: "object-contain object-bottom" }
+            : { boxClass: "bottom-[5.8%] left-1/2 -translate-x-1/2 w-[48%] h-[25%]", imgAlign: "object-contain object-bottom" };
+        case "side-left": return { boxClass: "top-[33%] left-[18.2%] w-[42%] h-[53%]", imgAlign: "object-contain object-left" };
+        case "side-right": return { boxClass: "top-[33%] right-[18.2%] w-[42%] h-[53%]", imgAlign: "object-contain object-right" };
+        default: return { boxClass: "top-[24%] right-[22%] w-[26%] h-[23%]", imgAlign: "object-contain" };
+      }
+    }
+
+    function getNamePositionClasses(namePos) {
+      switch (namePos) {
+        case "top-left":
+          return "top-[27%] right-[20.5%] text-right";
+        case "top-right":
+          return "top-[27%] left-[20.5%] text-left";
+        case "bottom-left":
+          return "bottom-[9%] right-[20.5%] text-right";
+        case "bottom-right":
+          return "bottom-[9%] left-[20.5%] text-left";
+        case "center-chest":
         default:
-          return { boxClass: "top-[24%] right-[22%] w-[26%] h-[23%]", imgAlign: "object-contain" };
+          return "top-[34%] left-1/2 -translate-x-1/2 text-center";
       }
     }
 
-    function getNamePositionClasses(namePos, resolvedPlacement) {
-      if (namePos === "center-top") return "top-[19%] left-1/2 -translate-x-1/2 text-center";
-      if (namePos === "bottom-opposite") {
-        return resolvedPlacement.includes("right")
-          ? "bottom-[11%] left-[21%] text-left"
-          : "bottom-[11%] right-[21%] text-right";
-      }
-      if (namePos === "under-motif") {
-        return resolvedPlacement === "chest-left"
-          ? "top-[49%] right-[20%] text-center"
-          : "top-[51%] left-1/2 -translate-x-1/2 text-center";
-      }
-      return "top-[27%] left-[21%] text-left";
-    }
-
-    function renderShirtMockup(item, color, placementOverride, childName = "", namePos = "chest-right", nameFont = "festive", isLarge = false) {
+    function renderShirtMockup(item, color, placementOverride, childName = "", namePos = "center-chest", nameFont = "festive", isLarge = false) {
       const shirtFill = color === "red" ? "#B91C1C" : "#FFFFFF";
       const shirtStroke = color === "red" ? "#7F1D1D" : "#E5E7EB";
       const collarFill = color === "red" ? "#991B1B" : "#F3F4F6";
       const resolvedPlacement = (!placementOverride || placementOverride === "suggested") ? item.placement : placementOverride;
       const layout = getDesignLayout(item, placementOverride);
-      const urls = normalizeImageUrl(item.imageUrl, item.code);
+      const candidates = getImageCandidates(item.imageUrl, item.code);
+      const candidatesAttr = escapeHTML(JSON.stringify(candidates));
 
-      const artworkHTML = urls.primary
-        ? `<img src="${urls.primary}" alt="${item.name}" referrerpolicy="no-referrer"
-             onerror="if(this.dataset.triedFallback!=='1' && '${urls.fallback}'){this.dataset.triedFallback='1';this.src='${urls.fallback}';}else{this.style.display='none';this.nextElementSibling.style.display='block';}"
+      const artworkHTML = candidates.length > 0
+        ? `<img src="${candidates[0]}" alt="${escapeHTML(item.name)}" referrerpolicy="no-referrer"
+             data-idx="0" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)"
              class="w-full h-full ${layout.imgAlign} select-none pointer-events-none" />
            <div style="display:none" class="w-full h-full">${getMotifFallbackSVG(item)}</div>`
         : getMotifFallbackSVG(item);
@@ -911,13 +715,11 @@
       const nameColor = color === "red" ? "#FDE68A" : "#991B1B";
       const nameShadow = color === "red" ? "0 1px 3px rgba(0,0,0,0.55)" : "0 1px 0 rgba(255,255,255,0.9)";
       const nameFontClass = nameFont === "festive" ? "font-festive" : "font-extrabold tracking-wide uppercase";
-      const namePosClass = getNamePositionClasses(namePos, resolvedPlacement);
+      const namePosClass = getNamePositionClasses(namePos);
 
       const nameHTML = cleanName
         ? `<div class="absolute ${namePosClass} max-w-[50%] px-1 pointer-events-none z-20 leading-none truncate ${nameFontClass} ${isLarge ? "text-sm sm:text-lg" : "text-[10px]"}"
-             style="color:${nameColor}; text-shadow:${nameShadow};">
-             ${escapeHTML(cleanName)}
-           </div>`
+             style="color:${nameColor}; text-shadow:${nameShadow};">${escapeHTML(cleanName)}</div>`
         : "";
 
       return `
@@ -929,27 +731,20 @@
               <path d="M100 28 Q150 60 200 28 Q150 44 100 28 Z" fill="${collarFill}" stroke="${shirtStroke}" stroke-width="2"/>
             </svg>
             <div class="absolute inset-0 shirt-clip pointer-events-none z-10">
-              <div class="absolute ${layout.boxClass} flex items-center justify-center">
-                ${artworkHTML}
-              </div>
+              <div class="absolute ${layout.boxClass} flex items-center justify-center">${artworkHTML}</div>
               ${nameHTML}
             </div>
           </div>
-        </div>
-      `;
+        </div>`;
     }
 
     function escapeHTML(str) {
-      return str.replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+      return String(str).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
     }
 
-    // =========================================================================
-    // STUDIO ONBOARDING LOGIC
-    // =========================================================================
     function goToStudioStep(step) {
       studio.step = step;
       document.getElementById("studioStepCounter").textContent = step;
-
       for (let i = 1; i <= 5; i++) {
         const tab = document.getElementById(`stepTab${i}`);
         const panel = document.getElementById(`studioPanel${i}`);
@@ -961,37 +756,25 @@
           panel.classList.add("hidden");
         }
       }
-
       document.getElementById("studioPrevBtn").disabled = (step === 1);
-      if (step === 5) {
-        document.getElementById("studioNextBtn").classList.add("hidden");
-        document.getElementById("studioAddBtn").classList.remove("hidden");
-      } else {
-        document.getElementById("studioNextBtn").classList.remove("hidden");
-        document.getElementById("studioAddBtn").classList.add("hidden");
-      }
+      document.getElementById("studioNextBtn").classList.toggle("hidden", step === 5);
+      document.getElementById("studioAddBtn").classList.toggle("hidden", step !== 5);
       renderStudio();
     }
 
-    function nextStudioStep() {
-      if (studio.step < 5) goToStudioStep(studio.step + 1);
-    }
-
-    function prevStudioStep() {
-      if (studio.step > 1) goToStudioStep(studio.step - 1);
-    }
+    function nextStudioStep() { if (studio.step < 5) goToStudioStep(studio.step + 1); }
+    function prevStudioStep() { if (studio.step > 1) goToStudioStep(studio.step - 1); }
 
     function setStudioColor(color) {
       studio.color = color;
       const wBtn = document.getElementById("studioColorWhite");
       const rBtn = document.getElementById("studioColorRed");
-      if (color === "white") {
-        wBtn.className = "p-4 rounded-2xl border-2 border-red-700 bg-red-50/40 flex flex-col items-center gap-2.5 transition active:scale-98";
-        rBtn.className = "p-4 rounded-2xl border-2 border-stone-200 hover:border-stone-300 bg-white flex flex-col items-center gap-2.5 transition active:scale-98";
-      } else {
-        rBtn.className = "p-4 rounded-2xl border-2 border-red-700 bg-red-50/40 flex flex-col items-center gap-2.5 transition active:scale-98";
-        wBtn.className = "p-4 rounded-2xl border-2 border-stone-200 hover:border-stone-300 bg-white flex flex-col items-center gap-2.5 transition active:scale-98";
-      }
+      wBtn.className = color === "white"
+        ? "p-4 rounded-2xl border-2 border-red-700 bg-red-50/40 flex flex-col items-center gap-2.5 transition active:scale-98"
+        : "p-4 rounded-2xl border-2 border-stone-200 hover:border-stone-300 bg-white flex flex-col items-center gap-2.5 transition active:scale-98";
+      rBtn.className = color === "red"
+        ? "p-4 rounded-2xl border-2 border-red-700 bg-red-50/40 flex flex-col items-center gap-2.5 transition active:scale-98"
+        : "p-4 rounded-2xl border-2 border-stone-200 hover:border-stone-300 bg-white flex flex-col items-center gap-2.5 transition active:scale-98";
       renderStudio();
     }
 
@@ -999,11 +782,9 @@
       studio.family = fam;
       ["Asomados", "Clasicos", "Tiernos"].forEach(f => {
         const btn = document.getElementById(`stFam${f}`);
-        if (btn) {
-          btn.className = f === fam
-            ? "st-fam-btn px-3 py-2 min-h-[38px] rounded-full text-xs font-bold bg-red-700 text-white shrink-0"
-            : "st-fam-btn px-3 py-2 min-h-[38px] rounded-full text-xs font-bold bg-stone-100 text-stone-700 shrink-0";
-        }
+        if (btn) btn.className = f === fam
+          ? "st-fam-btn px-3 py-2 min-h-[38px] rounded-full text-xs font-bold bg-red-700 text-white shrink-0"
+          : "st-fam-btn px-3 py-2 min-h-[38px] rounded-full text-xs font-bold bg-stone-100 text-stone-700 shrink-0";
       });
       renderStudioDesignGrid();
     }
@@ -1016,59 +797,33 @@
       renderStudio();
     }
 
-    function setStudioPlacement(pos) {
-      studio.placement = pos;
-      renderStudio();
-    }
-
+    function setStudioPlacement(pos) { studio.placement = pos; renderStudio(); }
     function setStudioName(val) {
       studio.childName = val;
-      const clearBtn = document.getElementById("clearStudioNameBtn");
-      if (val.trim()) clearBtn.classList.remove("hidden");
-      else clearBtn.classList.add("hidden");
+      document.getElementById("clearStudioNameBtn").classList.toggle("hidden", !val.trim());
       renderStudio();
     }
-
     function clearStudioName() {
       studio.childName = "";
       document.getElementById("studioChildName").value = "";
       document.getElementById("clearStudioNameBtn").classList.add("hidden");
       renderStudio();
     }
-
-    function setStudioNamePos(pos) {
-      studio.namePos = pos;
-      renderStudio();
-    }
-
-    function setStudioNameFont(font) {
-      studio.nameFont = font;
-      renderStudio();
-    }
-
-    function setStudioSize(size) {
-      studio.size = size;
-      renderStudio();
-    }
+    function setStudioNamePos(pos) { studio.namePos = pos; renderStudio(); }
+    function setStudioNameFont(font) { studio.nameFont = font; renderStudio(); }
+    function setStudioSize(size) { studio.size = size; renderStudio(); }
 
     function renderStudioDesignGrid() {
       const grid = document.getElementById("studioDesignGrid");
       const filtered = catalog.filter(d => d.family === studio.family);
       grid.innerHTML = filtered.map(item => {
         const selected = item.code === studio.code;
-        const urls = normalizeImageUrl(item.imageUrl, item.code);
-        const thumb = urls.primary
-          ? `<img src="${urls.primary}" alt="${item.name}" referrerpolicy="no-referrer" onerror="if(this.dataset.triedFallback!=='1' && '${urls.fallback}'){this.dataset.triedFallback='1';this.src='${urls.fallback}';}else{this.style.display='none';this.nextElementSibling.style.display='block';}" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
+        const candidates = getImageCandidates(item.imageUrl, item.code);
+        const candidatesAttr = escapeHTML(JSON.stringify(candidates));
+        const thumb = candidates.length > 0
+          ? `<img src="${candidates[0]}" alt="${escapeHTML(item.name)}" referrerpolicy="no-referrer" data-idx="0" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
           : `<div class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`;
-
-        return `
-          <button onclick="selectStudioMotif('${item.code}')"
-            class="p-2 rounded-xl border-2 text-center transition flex flex-col items-center justify-between gap-1 ${selected ? "border-red-700 bg-red-50/50" : "border-stone-200 bg-white hover:border-stone-300"}">
-            ${thumb}
-            <span class="text-[11px] font-extrabold text-stone-900">${item.code}</span>
-            <span class="text-[10px] text-stone-500 line-clamp-1 leading-tight">${item.name}</span>
-          </button>
-        `;
+        return `<button onclick="selectStudioMotif('${item.code}')" class="p-2 rounded-xl border-2 text-center transition flex flex-col items-center justify-between gap-1 ${selected ? "border-red-700 bg-red-50/50" : "border-stone-200 bg-white hover:border-stone-300"}">${thumb}<span class="text-[11px] font-extrabold text-stone-900">${item.code}</span><span class="text-[10px] text-stone-500 line-clamp-1 leading-tight">${item.name}</span></button>`;
       }).join("");
     }
 
@@ -1076,30 +831,17 @@
       const item = catalog.find(d => d.code === studio.code) || catalog[0];
       if (!item) return;
 
-      document.getElementById("studioCanvas").innerHTML = renderShirtMockup(
-        item, studio.color, studio.placement, studio.childName, studio.namePos, studio.nameFont, true
-      );
-
+      document.getElementById("studioCanvas").innerHTML = renderShirtMockup(item, studio.color, studio.placement, studio.childName, studio.namePos, studio.nameFont, true);
       document.getElementById("studioMotifBadge").textContent = `${item.code} · ${item.name}`;
 
       document.getElementById("studioPlacementGrid").innerHTML = PLACEMENT_OPTIONS.map(opt => {
         const active = studio.placement === opt.id;
-        return `
-          <button onclick="setStudioPlacement('${opt.id}')"
-            class="p-2.5 min-h-[42px] rounded-xl border-2 text-left text-xs font-bold transition ${active ? "border-red-700 bg-red-50/50 text-red-900" : "border-stone-200 text-stone-700 hover:border-stone-300"}">
-            ${opt.label}
-          </button>
-        `;
+        return `<button onclick="setStudioPlacement('${opt.id}')" class="p-2.5 min-h-[42px] rounded-xl border-2 text-left text-xs font-bold transition ${active ? "border-red-700 bg-red-50/50 text-red-900" : "border-stone-200 text-stone-700 hover:border-stone-300"}">${opt.label}</button>`;
       }).join("");
 
       document.getElementById("studioSizeGrid").innerHTML = SIZES.map(sz => {
         const active = studio.size === sz;
-        return `
-          <button onclick="setStudioSize('${sz}')"
-            class="py-2.5 min-h-[42px] rounded-xl border-2 font-extrabold text-xs sm:text-sm transition ${active ? "border-red-700 bg-red-700 text-white" : "border-stone-200 bg-white text-stone-800 hover:border-stone-300"}">
-            ${sz}
-          </button>
-        `;
+        return `<button onclick="setStudioSize('${sz}')" class="py-2.5 min-h-[42px] rounded-xl border-2 font-extrabold text-xs sm:text-sm transition ${active ? "border-red-700 bg-red-700 text-white" : "border-stone-200 bg-white text-stone-800 hover:border-stone-300"}">${sz}</button>`;
       }).join("");
 
       renderStudioDesignGrid();
@@ -1117,35 +859,22 @@
       const item = catalog.find(d => d.code === studio.code) || catalog[0];
       if (!item) return;
       addToCart({
-        code: item.code,
-        name: item.name,
-        color: studio.color,
-        size: studio.size,
-        placement: studio.placement,
-        childName: studio.childName.trim(),
-        namePos: studio.namePos,
-        nameFont: studio.nameFont,
-        price: item.price,
-        imageUrl: item.imageUrl,
-        family: item.family
+        code: item.code, name: item.name, color: studio.color, size: studio.size,
+        placement: studio.placement, childName: studio.childName.trim(),
+        namePos: studio.namePos, nameFont: studio.nameFont, price: item.price,
+        imageUrl: item.imageUrl, family: item.family
       });
       toggleCart(true);
     }
 
-    // =========================================================================
-    // CATALOG GRID & FILTERING
-    // =========================================================================
     function setGlobalColor(color) {
       globalColor = color;
-      const wBtn = document.getElementById("globalWhiteBtn");
-      const rBtn = document.getElementById("globalRedBtn");
-      if (color === "white") {
-        wBtn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition bg-white text-stone-900 shadow-sm";
-        rBtn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition text-stone-600 hover:text-stone-900";
-      } else {
-        rBtn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition bg-red-700 text-white shadow-sm";
-        wBtn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition text-stone-600 hover:text-stone-900";
-      }
+      document.getElementById("globalWhiteBtn").className = color === "white"
+        ? "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition bg-white text-stone-900 shadow-sm"
+        : "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition text-stone-600 hover:text-stone-900";
+      document.getElementById("globalRedBtn").className = color === "red"
+        ? "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition bg-red-700 text-white shadow-sm"
+        : "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition text-stone-600 hover:text-stone-900";
       renderCatalog();
     }
 
@@ -1155,9 +884,7 @@
         btn.className = "family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-50";
       });
       const active = document.getElementById(`tab-${fam}`);
-      if (active) {
-        active.className = "family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-red-700 text-white shadow-xs";
-      }
+      if (active) active.className = "family-tab px-4 py-2 min-h-[40px] rounded-full text-xs sm:text-sm font-bold transition whitespace-nowrap bg-red-700 text-white shadow-xs";
       renderCatalog();
     }
 
@@ -1168,15 +895,12 @@
       setFamilyFilter("all");
     }
 
-    function updateFamilyCounts() {
+    function renderCatalog() {
       document.getElementById("count-all").textContent = catalog.length;
       document.getElementById("count-Asomados").textContent = catalog.filter(i => i.family === "Asomados").length;
       document.getElementById("count-Clasicos").textContent = catalog.filter(i => i.family === "Clasicos").length;
       document.getElementById("count-Tiernos").textContent = catalog.filter(i => i.family === "Tiernos").length;
-    }
 
-    function renderCatalog() {
-      updateFamilyCounts();
       const grid = document.getElementById("catalogGrid");
       const empty = document.getElementById("emptyState");
       const q = searchQuery.toLowerCase().trim();
@@ -1197,55 +921,34 @@
       grid.innerHTML = filtered.map(item => `
         <div class="group bg-white rounded-3xl border border-stone-200/90 overflow-hidden shadow-2xs hover:shadow-md transition flex flex-col">
           <div onclick="openProductModal('${item.code}')" class="cursor-pointer bg-stone-100/80 p-3 sm:p-4 aspect-[5/6] relative flex items-center justify-center overflow-hidden">
-            <span class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded-lg bg-white/95 border border-stone-200 text-[11px] font-extrabold text-stone-800 shadow-2xs">
-              ${item.code}
-            </span>
-            <div class="w-full h-full group-hover:scale-105 transition duration-300">
-              ${renderShirtMockup(item, globalColor, "suggested")}
-            </div>
+            <span class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded-lg bg-white/95 border border-stone-200 text-[11px] font-extrabold text-stone-800 shadow-2xs">${item.code}</span>
+            <div class="w-full h-full group-hover:scale-105 transition duration-300">${renderShirtMockup(item, globalColor, "suggested")}</div>
           </div>
-
           <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between gap-2.5">
             <div>
-              <h3 onclick="openProductModal('${item.code}')" class="cursor-pointer font-bold text-xs sm:text-sm text-stone-900 line-clamp-1 group-hover:text-red-700 transition">
-                ${item.name}
-              </h3>
+              <h3 onclick="openProductModal('${item.code}')" class="cursor-pointer font-bold text-xs sm:text-sm text-stone-900 line-clamp-1 group-hover:text-red-700 transition">${item.name}</h3>
               <p class="text-[11px] text-stone-500 mt-0.5">Tallas 4 a 16</p>
             </div>
-
             <div class="flex items-center justify-between gap-2 pt-1">
               <span class="font-festive text-lg sm:text-xl font-bold text-red-800">$${item.price}</span>
-              <button onclick="openProductModal('${item.code}')"
-                class="px-3 py-2 min-h-[38px] rounded-xl bg-red-700 hover:bg-red-800 active:scale-95 text-white text-xs font-extrabold transition">
-                Elegir
-              </button>
+              <button onclick="openProductModal('${item.code}')" class="px-3 py-2 min-h-[38px] rounded-xl bg-red-700 hover:bg-red-800 active:scale-95 text-white text-xs font-extrabold transition">Elegir</button>
             </div>
           </div>
         </div>
       `).join("");
     }
 
-    // =========================================================================
-    // QUICK PRODUCT MODAL
-    // =========================================================================
     function openProductModal(code) {
       const item = catalog.find(d => d.code === code);
       if (!item) return;
-
-      modalState = {
-        code: item.code,
-        color: globalColor,
-        size: "8",
-        placement: "suggested",
-        childName: ""
-      };
-
+      modalState = { code: item.code, color: globalColor, size: "8", placement: "suggested", childName: "", namePos: "center-chest" };
       document.getElementById("modalCode").textContent = item.code;
       document.getElementById("modalTitle").textContent = item.name;
       document.getElementById("modalPriceTag").textContent = `$${item.price}`;
       document.getElementById("modalPlacementSelect").value = "suggested";
       document.getElementById("modalChildName").value = "";
-
+      document.getElementById("modalNamePosSelect").value = "center-chest";
+      document.getElementById("modalNamePosWrap").classList.add("hidden");
       renderModalPreview();
       const modal = document.getElementById("productModal");
       modal.classList.remove("hidden");
@@ -1258,23 +961,13 @@
       modal.classList.remove("flex");
     }
 
-    function setModalColor(color) {
-      modalState.color = color;
-      renderModalPreview();
-    }
-
-    function setModalSize(size) {
-      modalState.size = size;
-      renderModalPreview();
-    }
-
-    function setModalPlacement(pos) {
-      modalState.placement = pos;
-      renderModalPreview();
-    }
-
+    function setModalColor(color) { modalState.color = color; renderModalPreview(); }
+    function setModalSize(size) { modalState.size = size; renderModalPreview(); }
+    function setModalPlacement(pos) { modalState.placement = pos; renderModalPreview(); }
+    function setModalNamePos(pos) { modalState.namePos = pos; renderModalPreview(); }
     function setModalName(val) {
       modalState.childName = val;
+      document.getElementById("modalNamePosWrap").classList.toggle("hidden", !val.trim());
       renderModalPreview();
     }
 
@@ -1282,67 +975,38 @@
       const item = catalog.find(d => d.code === modalState.code);
       if (!item) return;
 
-      const wBtn = document.getElementById("modalColorWhite");
-      const rBtn = document.getElementById("modalColorRed");
-      if (modalState.color === "white") {
-        wBtn.className = "py-2.5 min-h-[42px] rounded-xl border-2 border-red-700 bg-red-50/40 text-xs font-bold flex items-center justify-center gap-2";
-        rBtn.className = "py-2.5 min-h-[42px] rounded-xl border-2 border-stone-200 text-xs font-bold flex items-center justify-center gap-2";
-      } else {
-        rBtn.className = "py-2.5 min-h-[42px] rounded-xl border-2 border-red-700 bg-red-50/40 text-xs font-bold flex items-center justify-center gap-2";
-        wBtn.className = "py-2.5 min-h-[42px] rounded-xl border-2 border-stone-200 text-xs font-bold flex items-center justify-center gap-2";
-      }
+      document.getElementById("modalColorWhite").className = modalState.color === "white"
+        ? "py-2.5 min-h-[42px] rounded-xl border-2 border-red-700 bg-red-50/40 text-xs font-bold flex items-center justify-center gap-2"
+        : "py-2.5 min-h-[42px] rounded-xl border-2 border-stone-200 text-xs font-bold flex items-center justify-center gap-2";
+      document.getElementById("modalColorRed").className = modalState.color === "red"
+        ? "py-2.5 min-h-[42px] rounded-xl border-2 border-red-700 bg-red-50/40 text-xs font-bold flex items-center justify-center gap-2"
+        : "py-2.5 min-h-[42px] rounded-xl border-2 border-stone-200 text-xs font-bold flex items-center justify-center gap-2";
 
       document.getElementById("modalSizeGrid").innerHTML = SIZES.map(sz => {
         const active = modalState.size === sz;
-        return `
-          <button onclick="setModalSize('${sz}')"
-            class="py-2 min-h-[38px] rounded-xl border-2 text-xs font-extrabold transition ${active ? "border-red-700 bg-red-700 text-white" : "border-stone-200 text-stone-800 hover:border-stone-300"}">
-            ${sz}
-          </button>
-        `;
+        return `<button onclick="setModalSize('${sz}')" class="py-2 min-h-[38px] rounded-xl border-2 text-xs font-extrabold transition ${active ? "border-red-700 bg-red-700 text-white" : "border-stone-200 text-stone-800 hover:border-stone-300"}">${sz}</button>`;
       }).join("");
 
-      document.getElementById("modalShirtPreview").innerHTML = renderShirtMockup(
-        item, modalState.color, modalState.placement, modalState.childName, "chest-right", "festive", true
-      );
+      document.getElementById("modalShirtPreview").innerHTML = renderShirtMockup(item, modalState.color, modalState.placement, modalState.childName, modalState.namePos, "festive", true);
     }
 
     function addModalToCart() {
       const item = catalog.find(d => d.code === modalState.code);
       if (!item) return;
       addToCart({
-        code: item.code,
-        name: item.name,
-        color: modalState.color,
-        size: modalState.size,
-        placement: modalState.placement,
-        childName: modalState.childName.trim(),
-        namePos: "chest-right",
-        nameFont: "festive",
-        price: item.price,
-        imageUrl: item.imageUrl,
-        family: item.family
+        code: item.code, name: item.name, color: modalState.color, size: modalState.size,
+        placement: modalState.placement, childName: modalState.childName.trim(),
+        namePos: modalState.namePos, nameFont: "festive", price: item.price,
+        imageUrl: item.imageUrl, family: item.family
       });
       closeProductModal();
       toggleCart(true);
     }
 
-    // =========================================================================
-    // CART & WHATSAPP ORDER GENERATOR
-    // =========================================================================
     function addToCart(entry) {
-      const existing = cart.find(c =>
-        c.code === entry.code &&
-        c.color === entry.color &&
-        c.size === entry.size &&
-        c.placement === entry.placement &&
-        c.childName === entry.childName
-      );
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cart.push({ ...entry, qty: 1, uid: Date.now() + Math.random() });
-      }
+      const existing = cart.find(c => c.code === entry.code && c.color === entry.color && c.size === entry.size && c.placement === entry.placement && c.childName === entry.childName && c.namePos === entry.namePos);
+      if (existing) existing.qty += 1;
+      else cart.push({ ...entry, qty: 1, uid: Date.now() + Math.random() });
       renderCart();
     }
 
@@ -1356,51 +1020,38 @@
 
     function toggleCart(open) {
       const drawer = document.getElementById("cartDrawer");
-      if (open) {
-        drawer.classList.remove("hidden");
-        drawer.classList.add("flex");
-        renderCart();
-      } else {
-        drawer.classList.add("hidden");
-        drawer.classList.remove("flex");
-      }
+      drawer.classList.toggle("hidden", !open);
+      drawer.classList.toggle("flex", open);
+      if (open) renderCart();
     }
 
     function getPlacementText(placementId) {
-      const found = PLACEMENT_OPTIONS.find(p => p.id === placementId);
-      return found ? found.label : "Sugerida";
+      return PLACEMENT_OPTIONS.find(p => p.id === placementId)?.label || "Sugerida";
+    }
+
+    function getNamePosText(namePosId) {
+      return NAME_POS_OPTIONS.find(p => p.id === namePosId)?.label || "Centro pecho";
     }
 
     function renderCart() {
       const totalItems = cart.reduce((acc, c) => acc + c.qty, 0);
       const totalAmount = cart.reduce((acc, c) => acc + c.qty * c.price, 0);
-
       document.getElementById("cartCountBadge").textContent = totalItems;
       document.getElementById("cartTotalAmount").textContent = `$${totalAmount}`;
       document.getElementById("whatsappOrderBtn").disabled = (cart.length === 0);
 
       const container = document.getElementById("cartItemsContainer");
       if (cart.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-14 text-stone-400">
-            <p class="font-festive text-lg font-bold text-stone-600">Tu carrito está vacío</p>
-            <p class="text-xs mt-1">Elige una franela del diseñador o del catálogo para comenzar.</p>
-          </div>
-        `;
+        container.innerHTML = `<div class="text-center py-14 text-stone-400"><p class="font-festive text-lg font-bold text-stone-600">Tu carrito está vacío</p><p class="text-xs mt-1">Elige una franela del diseñador o del catálogo para comenzar.</p></div>`;
         return;
       }
 
       container.innerHTML = cart.map(item => {
         const colorLabel = item.color === "red" ? "Roja" : "Blanca";
-        const nameLine = item.childName
-          ? `<p class="text-[11px] font-bold text-red-700 mt-0.5">Nombre: "${escapeHTML(item.childName)}"</p>`
-          : "";
-
+        const nameLine = item.childName ? `<p class="text-[11px] font-bold text-red-700 mt-0.5">Nombre: "${escapeHTML(item.childName)}" (${getNamePosText(item.namePos)})</p>` : "";
         return `
           <div class="p-3 rounded-2xl border border-stone-200 bg-white flex items-center gap-3">
-            <div class="w-16 h-20 bg-stone-100 rounded-xl p-1 shrink-0">
-              ${renderShirtMockup(item, item.color, item.placement, item.childName, item.namePos, item.nameFont, false)}
-            </div>
+            <div class="w-16 h-20 bg-stone-100 rounded-xl p-1 shrink-0">${renderShirtMockup(item, item.color, item.placement, item.childName, item.namePos, item.nameFont, false)}</div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between gap-1">
                 <span class="text-xs font-extrabold text-stone-900 truncate">${item.code} · ${item.name}</span>
@@ -1415,39 +1066,24 @@
                 <button onclick="updateCartQty(${item.uid}, 1)" class="w-7 h-7 rounded-lg bg-stone-100 hover:bg-stone-200 font-bold text-xs">+</button>
               </div>
             </div>
-          </div>
-        `;
+          </div>`;
       }).join("");
     }
 
     function sendWhatsAppOrder() {
       if (cart.length === 0) return;
-
       const lines = cart.map((item, idx) => {
         const colorText = item.color === "red" ? "franela roja" : "franela blanca";
         const posText = item.placement === "suggested" ? "" : ` | Ubicación: ${getPlacementText(item.placement)}`;
-        const nameText = item.childName ? ` | Nombre: "${item.childName}"` : "";
+        const nameText = item.childName ? ` | Nombre: "${item.childName}" (${getNamePosText(item.namePos)})` : "";
         return `${idx + 1}. *${item.code}* (${item.name}) - ${colorText} talla *${item.size}* (x${item.qty})${posText}${nameText} = *$${item.price * item.qty}*`;
       });
-
       const total = cart.reduce((acc, c) => acc + c.qty * c.price, 0);
-      const message =
-        `🎄 *¡Hola! Quiero hacer este pedido de Franelas Navideñas:*\n\n` +
-        lines.join("\n") +
-        `\n\n💰 *Total a pagar: $${total}*\n¿Me confirman disponibilidad y datos de pago?`;
-
-      const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank", "noopener,noreferrer");
+      const message = `🎄 *¡Hola! Quiero hacer este pedido de Franelas Navideñas:*\n\n${lines.join("\n")}\n\n💰 *Total a pagar: $${total}*\n¿Me confirman disponibilidad y datos de pago?`;
+      window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     }
 
-    // =========================================================================
-    // INIT & EVENT LISTENERS
-    // =========================================================================
-    function renderAll() {
-      renderStudio();
-      renderCatalog();
-      renderCart();
-    }
+    function renderAll() { renderStudio(); renderCatalog(); renderCart(); }
 
     document.getElementById("searchInput").addEventListener("input", e => {
       searchQuery = e.target.value;
@@ -1455,24 +1091,15 @@
       document.getElementById("clearSearchBtn").classList.toggle("hidden", !searchQuery);
       renderCatalog();
     });
-
     document.getElementById("searchInputMobile").addEventListener("input", e => {
       searchQuery = e.target.value;
       document.getElementById("searchInput").value = searchQuery;
       renderCatalog();
     });
-
     document.getElementById("clearSearchBtn").addEventListener("click", resetFilters);
+    document.getElementById("productModal").addEventListener("click", e => { if (e.target.id === "productModal") closeProductModal(); });
+    document.getElementById("cartDrawer").addEventListener("click", e => { if (e.target.id === "cartDrawer") toggleCart(false); });
 
-    document.getElementById("productModal").addEventListener("click", e => {
-      if (e.target.id === "productModal") closeProductModal();
-    });
-
-    document.getElementById("cartDrawer").addEventListener("click", e => {
-      if (e.target.id === "cartDrawer") toggleCart(false);
-    });
-
-    // Boot
     renderAll();
     loadCatalogFromAppsScript();
   </script>

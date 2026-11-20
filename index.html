@@ -499,6 +499,12 @@
 
     function toggleDiagnostics() { document.getElementById("diagBox").classList.toggle("hidden"); }
 
+    function extractDriveId(rawUrl) {
+      const clean = (rawUrl || "").trim();
+      const match = clean.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=[^&]+&)?id=|thumbnail\?id=)|docs\.google\.com\/file\/d\/|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]{15,})/);
+      return match ? match[1] : null;
+    }
+
     function getImageCandidates(rawUrl, code) {
       const clean = (rawUrl || "").trim();
       const upper = (code || "").toUpperCase().trim();
@@ -509,13 +515,11 @@
         if (!/^https?:\/\//i.test(clean)) {
           list.push(clean.startsWith("./") || clean.startsWith("/") ? clean : `./${clean}`);
         } else {
-          const driveMatch = clean.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=[^&]+&)?id=)|docs\.google\.com\/file\/d\/|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]{15,})/);
-          if (driveMatch && driveMatch[1]) {
-            const id = driveMatch[1];
-            // Orden optimizado para Chrome Android y navegadores móviles
+          const id = extractDriveId(clean);
+          if (id) {
             list.push(
+              `https://lh3.googleusercontent.com/d/${id}=s800`,
               `https://drive.google.com/thumbnail?id=${id}&sz=w800`,
-              `https://lh3.googleusercontent.com/d/${id}=w800`,
               `https://drive.google.com/uc?export=view&id=${id}`
             );
           } else {
@@ -524,12 +528,14 @@
         }
       }
       if (upper) {
-        list.push(`./${upper}.png`, `./${lower}.png`, `./${upper}.jpg`, `./${lower}.jpg`, `./${upper}.webp`);
+        list.push(`./${upper}.png`, `./${lower}.png`, `./${upper}.jpg`, `./${lower}.jpg`);
       }
       return [...new Set(list)];
     }
 
-    function handleImageFallback(imgEl) {
+    const base64Cache = {};
+
+    async function handleImageFallback(imgEl) {
       try {
         const candidates = JSON.parse(imgEl.dataset.candidates || "[]");
         const nextIdx = (parseInt(imgEl.dataset.idx || "0", 10)) + 1;
@@ -538,7 +544,24 @@
           imgEl.src = candidates[nextIdx];
           return;
         }
+
+        const driveId = imgEl.dataset.driveId;
+        if (driveId && !imgEl.dataset.triedScript) {
+          imgEl.dataset.triedScript = "1";
+          if (base64Cache[driveId]) {
+            imgEl.src = base64Cache[driveId];
+            return;
+          }
+          const res = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?img=${encodeURIComponent(driveId)}`);
+          const json = await res.json();
+          if (json && json.dataUrl) {
+            base64Cache[driveId] = json.dataUrl;
+            imgEl.src = json.dataUrl;
+            return;
+          }
+        }
       } catch (e) {}
+
       imgEl.style.display = "none";
       if (imgEl.nextElementSibling) imgEl.nextElementSibling.style.display = "block";
     }
@@ -583,11 +606,31 @@
         if (parsedItems.length > 0) {
           const first = parsedItems[0];
           const candidates = getImageCandidates(first.imageUrl, first.code);
-          diagRow1.textContent = `Fila 1 (${first.code}): ${candidates.join(" -> ")}`;
+          const driveId = extractDriveId(first.imageUrl);
+          diagRow1.textContent = `Fila 1 (${first.code}): ID=${driveId || "ninguno"} -> ${candidates.join(" -> ")}`;
 
           const testImg = new Image();
+          testImg.referrerPolicy = "no-referrer";
           testImg.onload = () => { diagImgTest.textContent = `✅ "${candidates[0]}" cargada (${testImg.width}x${testImg.height}px).`; };
-          testImg.onerror = () => { diagImgTest.textContent = `⚠️ Falló "${candidates[0]}", usando respaldo.`; };
+          testImg.onerror = async () => {
+            if (driveId) {
+              diagImgTest.textContent = `⏳ URL directa bloqueada en móvil, probando respaldo Apps Script...`;
+              try {
+                const r = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?img=${encodeURIComponent(driveId)}`);
+                const j = await r.json();
+                if (j && j.dataUrl) {
+                  base64Cache[driveId] = j.dataUrl;
+                  diagImgTest.textContent = `✅ Imagen rescatada vía Apps Script Base64 correctamente.`;
+                } else {
+                  diagImgTest.textContent = `❌ Error Apps Script: ${j.error || "sin dataUrl"}`;
+                }
+              } catch (e) {
+                diagImgTest.textContent = `❌ Error conexión respaldo: ${e.message}`;
+              }
+            } else {
+              diagImgTest.textContent = `⚠️ Falló "${candidates[0]}" y no hay ID de Drive.`;
+            }
+          };
           testImg.src = candidates[0];
 
           catalog = parsedItems;
@@ -707,10 +750,13 @@
       const layout = getDesignLayout(item, placementOverride);
       const candidates = getImageCandidates(item.imageUrl, item.code);
       const candidatesAttr = escapeHTML(JSON.stringify(candidates));
+      const driveId = extractDriveId(item.imageUrl) || "";
+      const initialSrc = (driveId && base64Cache[driveId]) ? base64Cache[driveId] : (candidates[0] || "");
 
-      const artworkHTML = candidates.length > 0
-        ? `<img src="${candidates[0]}" alt="${escapeHTML(item.name)}"
-             data-idx="0" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)"
+      const artworkHTML = (candidates.length > 0 || initialSrc)
+        ? `<img src="${initialSrc}" alt="${escapeHTML(item.name)}"
+             referrerpolicy="no-referrer" crossorigin="anonymous"
+             data-idx="0" data-drive-id="${driveId}" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)"
              class="w-full h-full ${layout.imgAlign} select-none pointer-events-none" />
            <div style="display:none" class="w-full h-full">${getMotifFallbackSVG(item)}</div>`
         : getMotifFallbackSVG(item);
@@ -824,8 +870,10 @@
         const selected = item.code === studio.code;
         const candidates = getImageCandidates(item.imageUrl, item.code);
         const candidatesAttr = escapeHTML(JSON.stringify(candidates));
-        const thumb = candidates.length > 0
-          ? `<img src="${candidates[0]}" alt="${escapeHTML(item.name)}" data-idx="0" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
+        const driveId = extractDriveId(item.imageUrl) || "";
+        const initialSrc = (driveId && base64Cache[driveId]) ? base64Cache[driveId] : (candidates[0] || "");
+        const thumb = (candidates.length > 0 || initialSrc)
+          ? `<img src="${initialSrc}" alt="${escapeHTML(item.name)}" referrerpolicy="no-referrer" crossorigin="anonymous" data-idx="0" data-drive-id="${driveId}" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
           : `<div class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`;
         return `<button onclick="selectStudioMotif('${item.code}')" class="p-2 rounded-xl border-2 text-center transition flex flex-col items-center justify-between gap-1 ${selected ? "border-red-700 bg-red-50/50" : "border-stone-200 bg-white hover:border-stone-300"}">${thumb}<span class="text-[11px] font-extrabold text-stone-900">${item.code}</span><span class="text-[10px] text-stone-500 line-clamp-1 leading-tight">${item.name}</span></button>`;
       }).join("");
@@ -1083,7 +1131,7 @@
         return `${idx + 1}. *${item.code}* (${item.name}) - ${colorText} talla *${item.size}* (x${item.qty})${posText}${nameText} = *$${item.price * item.qty}*`;
       });
       const total = cart.reduce((acc, c) => acc + c.qty * c.price, 0);
-      const message = ` ¡Hola! Quiero hacer este pedido de Franelas Navideñas:\n\n${lines.join("\n")}\n\n *Total a pagar: $${total}*\n¿Me confirman disponibilidad y datos de pago?`;
+      const message = `¡Hola! Quiero hacer este pedido de Franelas Navideñas:\n\n${lines.join("\n")}\n\n *Total a pagar: $${total}*\n¿Me confirman disponibilidad y datos de pago?`;
       window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     }
 

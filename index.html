@@ -34,6 +34,23 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .shirt-shadow { filter: drop-shadow(0 14px 24px rgba(17, 24, 39, 0.14)); }
     .shirt-card-shadow { filter: drop-shadow(0 8px 14px rgba(17, 24, 39, 0.09)); }
+    /* Recorte exacto a la silueta de la franela (viewBox 300x360) para que ningún diseño se salga */
+    .shirt-clip {
+      clip-path: polygon(
+        31.3% 7.2%,
+        50% 12.2%,
+        68.7% 7.2%,
+        96.7% 20.6%,
+        87.3% 36.7%,
+        81.3% 32.8%,
+        81.3% 93.9%,
+        50% 95.3%,
+        18.7% 93.9%,
+        18.7% 32.8%,
+        12.7% 36.7%,
+        3.3% 20.6%
+      );
+    }
     @media (max-width: 640px) {
       input, select, textarea { font-size: 16px !important; }
     }
@@ -178,7 +195,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-12">
         <!-- Left: Live Giant T-Shirt Preview -->
         <div class="lg:col-span-6 bg-gradient-to-b from-stone-100/90 to-stone-200/50 p-4 sm:p-8 flex flex-col items-center justify-center relative border-b lg:border-b-0 lg:border-r border-stone-200/80">
-          <div class="w-full max-w-[270px] sm:max-w-[350px] aspect-[4/5] relative flex items-center justify-center" id="studioCanvas">
+          <div class="w-full max-w-[280px] sm:max-w-[350px] aspect-[5/6] relative flex items-center justify-center" id="studioCanvas">
             <!-- Rendered by JS -->
           </div>
 
@@ -417,7 +434,7 @@
       <div class="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
         <!-- Preview -->
         <div class="bg-stone-100 rounded-2xl p-4 flex flex-col items-center justify-center">
-          <div id="modalShirtPreview" class="w-48 sm:w-56 aspect-[4/5] relative flex items-center justify-center"></div>
+          <div id="modalShirtPreview" class="w-48 sm:w-56 aspect-[5/6] relative flex items-center justify-center"></div>
           <span id="modalPriceTag" class="mt-2 font-festive text-xl font-bold text-red-800">$15</span>
         </div>
 
@@ -714,7 +731,7 @@
     }
 
     // =========================================================================
-    // SVG ARTWORK & T-SHIRT RENDER ENGINE
+    // SVG ARTWORK & T-SHIRT RENDER ENGINE (SILUETA 300x360 + CLIP-PATH)
     // =========================================================================
     function getMotifFallbackSVG(item) {
       const fam = item.family;
@@ -755,32 +772,124 @@
         </svg>`;
     }
 
-    function getPlacementClasses(placement) {
-      switch (placement) {
-        case "chest-left":    return "top-[28%] right-[25%] w-[24%] h-[24%]";
-        case "center":        return "top-[34%] left-1/2 -translate-x-1/2 w-[36%] h-[36%]";
-        case "bottom-left":   return "bottom-[8%] left-[21%] w-[32%] h-[32%]";
-        case "bottom-right":  return "bottom-[8%] right-[21%] w-[32%] h-[32%]";
-        case "bottom-center": return "bottom-[7%] left-1/2 -translate-x-1/2 w-[36%] h-[30%]";
-        case "side-left":     return "top-[42%] left-[20%] w-[28%] h-[34%]";
-        case "side-right":    return "top-[42%] right-[20%] w-[28%] h-[34%]";
-        default:              return "top-[28%] right-[25%] w-[24%] h-[24%]";
+    // Geometría de la franela (viewBox="0 0 300 360", proporción exacta 5:6):
+    // Borde izquierdo del torso = x:56 (18.7%) | Borde derecho del torso = x:244 (right: 18.7%)
+    // Ancho interior del torso = 62.6% | Ruedo inferior = y:338 (bottom: 6.1%)
+    function getDesignLayout(item, placementOverride) {
+      const code = (item.code || "").toUpperCase();
+      const useSuggested = !placementOverride || placementOverride === "suggested";
+
+      if (useSuggested) {
+        switch (code) {
+          // --- ASOMADOS (A01 - A16) ---
+          case "A01":
+            return { boxClass: "bottom-[6.1%] left-[18.7%] w-[36%] h-[33%]", imgAlign: "object-contain object-left-bottom" };
+          case "A02":
+            return { boxClass: "bottom-[6.1%] left-[18.7%] w-[34%] h-[23%]", imgAlign: "object-contain object-left-bottom" };
+          case "A03":
+            return { boxClass: "top-[31%] right-[19%] w-[26%] h-[16%]", imgAlign: "object-contain object-bottom" };
+          case "A04":
+            return { boxClass: "bottom-[6.1%] right-[18.7%] w-[35%] h-[24%]", imgAlign: "object-contain object-right-bottom" };
+          case "A05":
+            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[48%] h-[24%]", imgAlign: "object-contain object-bottom" };
+          case "A06":
+            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[50%] h-[25%]", imgAlign: "object-contain object-bottom" };
+          case "A07":
+            return { boxClass: "bottom-[6.1%] right-[18.7%] w-[32%] h-[23%]", imgAlign: "object-contain object-right-bottom" };
+          case "A08":
+            return { boxClass: "bottom-[6.1%] right-[18.7%] w-[35%] h-[25%]", imgAlign: "object-contain object-right-bottom" };
+          case "A09":
+            return { boxClass: "top-[38%] left-[18.7%] w-[31%] h-[42%]", imgAlign: "object-contain object-left" };
+          case "A10":
+            return { boxClass: "top-[36%] right-[18.7%] w-[31%] h-[46%]", imgAlign: "object-contain object-right" };
+          case "A11":
+            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[54%] h-[23%]", imgAlign: "object-contain object-bottom" };
+          case "A12":
+            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[54%] h-[23%]", imgAlign: "object-contain object-bottom" };
+          case "A13":
+            return { boxClass: "bottom-[6.1%] left-1/2 -translate-x-1/2 w-[38%] h-[24%]", imgAlign: "object-contain object-bottom" };
+          case "A14":
+            return { boxClass: "top-[36%] right-[18.7%] w-[30%] h-[45%]", imgAlign: "object-contain object-right" };
+          case "A15":
+            return { boxClass: "top-[35%] right-[18.7%] w-[31%] h-[46%]", imgAlign: "object-contain object-right" };
+          case "A16":
+            return { boxClass: "top-[38%] left-[18.7%] w-[29%] h-[44%]", imgAlign: "object-contain object-left" };
+
+          // --- CLÁSICOS ILUSTRADOS (C01 - C16) ---
+          case "C01":
+            return { boxClass: "top-[24%] right-[21%] w-[28%] h-[24%]", imgAlign: "object-contain" };
+          case "C02":
+          case "C03":
+          case "C06":
+          case "C07":
+          case "C08":
+          case "C09":
+          case "C11":
+          case "C12":
+          case "C13":
+          case "C14":
+          case "C15":
+            return { boxClass: "bottom-[7.5%] left-[20%] w-[45%] h-[36%]", imgAlign: "object-contain object-left-bottom" };
+          case "C04":
+          case "C05":
+          case "C10":
+          case "C16":
+            return { boxClass: "bottom-[7.5%] right-[20%] w-[45%] h-[36%]", imgAlign: "object-contain object-right-bottom" };
+
+          // --- TIERNOS (T01 - T20) ---
+          case "T01":
+            return { boxClass: "top-[27%] right-[19.5%] w-[35%] h-[18%]", imgAlign: "object-contain" };
+          case "T10":
+            return { boxClass: "top-[25%] right-[20%] w-[34%] h-[21%]", imgAlign: "object-contain" };
+          case "T04":
+          case "T14":
+          case "T18":
+            return { boxClass: "bottom-[7.5%] right-[21%] w-[33%] h-[32%]", imgAlign: "object-contain object-right-bottom" };
+          case "T08":
+          case "T17":
+            return { boxClass: "bottom-[7.5%] left-[21%] w-[33%] h-[32%]", imgAlign: "object-contain object-left-bottom" };
+          default:
+            if (item.family === "Tiernos") {
+              return { boxClass: "top-[24%] right-[22%] w-[26%] h-[23%]", imgAlign: "object-contain" };
+            }
+            break;
+        }
+      }
+
+      const resolved = useSuggested ? item.placement : placementOverride;
+      switch (resolved) {
+        case "chest-left":
+          return { boxClass: "top-[24%] right-[22%] w-[26%] h-[23%]", imgAlign: "object-contain" };
+        case "center":
+          return { boxClass: "top-[32%] left-1/2 -translate-x-1/2 w-[42%] h-[34%]", imgAlign: "object-contain" };
+        case "bottom-left":
+          return { boxClass: "bottom-[7%] left-[19.5%] w-[40%] h-[33%]", imgAlign: "object-contain object-left-bottom" };
+        case "bottom-right":
+          return { boxClass: "bottom-[7%] right-[19.5%] w-[40%] h-[33%]", imgAlign: "object-contain object-right-bottom" };
+        case "bottom-center":
+          return { boxClass: "bottom-[6.5%] left-1/2 -translate-x-1/2 w-[48%] h-[25%]", imgAlign: "object-contain object-bottom" };
+        case "side-left":
+          return { boxClass: "top-[38%] left-[19%] w-[30%] h-[42%]", imgAlign: "object-contain object-left" };
+        case "side-right":
+          return { boxClass: "top-[38%] right-[19%] w-[30%] h-[42%]", imgAlign: "object-contain object-right" };
+        default:
+          return { boxClass: "top-[24%] right-[22%] w-[26%] h-[23%]", imgAlign: "object-contain" };
       }
     }
 
     function getNamePositionClasses(namePos, resolvedPlacement) {
-      if (namePos === "center-top") return "top-[21%] left-1/2 -translate-x-1/2 text-center";
+      if (namePos === "center-top") return "top-[19%] left-1/2 -translate-x-1/2 text-center";
       if (namePos === "bottom-opposite") {
         return resolvedPlacement.includes("right")
-          ? "bottom-[12%] left-[22%] text-left"
-          : "bottom-[12%] right-[22%] text-right";
+          ? "bottom-[11%] left-[21%] text-left"
+          : "bottom-[11%] right-[21%] text-right";
       }
       if (namePos === "under-motif") {
         return resolvedPlacement === "chest-left"
-          ? "top-[53%] right-[23%] text-center"
-          : "top-[52%] left-1/2 -translate-x-1/2 text-center";
+          ? "top-[49%] right-[20%] text-center"
+          : "top-[51%] left-1/2 -translate-x-1/2 text-center";
       }
-      return "top-[29%] left-[23%] text-left";
+      return "top-[27%] left-[21%] text-left";
     }
 
     function renderShirtMockup(item, color, placementOverride, childName = "", namePos = "chest-right", nameFont = "festive", isLarge = false) {
@@ -788,13 +897,13 @@
       const shirtStroke = color === "red" ? "#7F1D1D" : "#E5E7EB";
       const collarFill = color === "red" ? "#991B1B" : "#F3F4F6";
       const resolvedPlacement = (!placementOverride || placementOverride === "suggested") ? item.placement : placementOverride;
-      const posClass = getPlacementClasses(resolvedPlacement);
+      const layout = getDesignLayout(item, placementOverride);
       const urls = normalizeImageUrl(item.imageUrl, item.code);
 
       const artworkHTML = urls.primary
         ? `<img src="${urls.primary}" alt="${item.name}" referrerpolicy="no-referrer"
              onerror="if(this.dataset.triedFallback!=='1' && '${urls.fallback}'){this.dataset.triedFallback='1';this.src='${urls.fallback}';}else{this.style.display='none';this.nextElementSibling.style.display='block';}"
-             class="w-full h-full object-contain select-none pointer-events-none" />
+             class="w-full h-full ${layout.imgAlign} select-none pointer-events-none" />
            <div style="display:none" class="w-full h-full">${getMotifFallbackSVG(item)}</div>`
         : getMotifFallbackSVG(item);
 
@@ -805,7 +914,7 @@
       const namePosClass = getNamePositionClasses(namePos, resolvedPlacement);
 
       const nameHTML = cleanName
-        ? `<div class="absolute ${namePosClass} max-w-[44%] px-1 pointer-events-none z-20 leading-none truncate ${nameFontClass} ${isLarge ? "text-sm sm:text-lg" : "text-[10px]"}"
+        ? `<div class="absolute ${namePosClass} max-w-[50%] px-1 pointer-events-none z-20 leading-none truncate ${nameFontClass} ${isLarge ? "text-sm sm:text-lg" : "text-[10px]"}"
              style="color:${nameColor}; text-shadow:${nameShadow};">
              ${escapeHTML(cleanName)}
            </div>`
@@ -813,15 +922,19 @@
 
       return `
         <div class="relative w-full h-full flex items-center justify-center select-none">
-          <svg viewBox="0 0 300 350" class="w-full h-full ${isLarge ? "shirt-shadow" : "shirt-card-shadow"}">
-            <path d="M98 32 Q150 56 202 32 L286 78 L258 134 L224 116 L224 326 Q150 334 76 326 L76 116 L42 134 L14 78 Z"
-              fill="${shirtFill}" stroke="${shirtStroke}" stroke-width="3" stroke-linejoin="round"/>
-            <path d="M104 34 Q150 64 196 34 Q150 48 104 34 Z" fill="${collarFill}" stroke="${shirtStroke}" stroke-width="2"/>
-          </svg>
-          <div class="absolute ${posClass} flex items-center justify-center pointer-events-none z-10">
-            ${artworkHTML}
+          <div class="relative w-full max-h-full aspect-[5/6]">
+            <svg viewBox="0 0 300 360" class="w-full h-full ${isLarge ? "shirt-shadow" : "shirt-card-shadow"}">
+              <path d="M94 26 Q150 52 206 26 L290 74 L262 132 L244 118 L244 338 Q150 346 56 338 L56 118 L38 132 L10 74 Z"
+                fill="${shirtFill}" stroke="${shirtStroke}" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M100 28 Q150 60 200 28 Q150 44 100 28 Z" fill="${collarFill}" stroke="${shirtStroke}" stroke-width="2"/>
+            </svg>
+            <div class="absolute inset-0 shirt-clip pointer-events-none z-10">
+              <div class="absolute ${layout.boxClass} flex items-center justify-center">
+                ${artworkHTML}
+              </div>
+              ${nameHTML}
+            </div>
           </div>
-          ${nameHTML}
         </div>
       `;
     }
@@ -1083,7 +1196,7 @@
       empty.classList.add("hidden");
       grid.innerHTML = filtered.map(item => `
         <div class="group bg-white rounded-3xl border border-stone-200/90 overflow-hidden shadow-2xs hover:shadow-md transition flex flex-col">
-          <div onclick="openProductModal('${item.code}')" class="cursor-pointer bg-stone-100/80 p-3 sm:p-5 aspect-[4/5] relative flex items-center justify-center overflow-hidden">
+          <div onclick="openProductModal('${item.code}')" class="cursor-pointer bg-stone-100/80 p-3 sm:p-4 aspect-[5/6] relative flex items-center justify-center overflow-hidden">
             <span class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded-lg bg-white/95 border border-stone-200 text-[11px] font-extrabold text-stone-800 shadow-2xs">
               ${item.code}
             </span>

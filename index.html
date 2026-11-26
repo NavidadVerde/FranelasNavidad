@@ -607,7 +607,7 @@
           const first = parsedItems[0];
           const candidates = getImageCandidates(first.imageUrl, first.code);
           const driveId = extractDriveId(first.imageUrl);
-          diagRow1.textContent = `Fila 1 (${first.code}): ID=${driveId || "ninguno"} -> ${candidates.join(" -> ")}`;
+          diagRow1.textContent = `Fila 1 (${first.code}): ${candidates[0] || "sin enlace"}`;
 
           const testImg = new Image();
           testImg.referrerPolicy = "no-referrer";
@@ -628,7 +628,7 @@
                 diagImgTest.textContent = `❌ Error conexión respaldo: ${e.message}`;
               }
             } else {
-              diagImgTest.textContent = `⚠️ Falló "${candidates[0]}" y no hay ID de Drive.`;
+              diagImgTest.textContent = `⚠️ Falló "${candidates[0]}".`;
             }
           };
           testImg.src = candidates[0];
@@ -755,7 +755,7 @@
 
       const artworkHTML = (candidates.length > 0 || initialSrc)
         ? `<img src="${initialSrc}" alt="${escapeHTML(item.name)}"
-             referrerpolicy="no-referrer" crossorigin="anonymous"
+             referrerpolicy="no-referrer"
              data-idx="0" data-drive-id="${driveId}" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)"
              class="w-full h-full ${layout.imgAlign} select-none pointer-events-none" />
            <div style="display:none" class="w-full h-full">${getMotifFallbackSVG(item)}</div>`
@@ -873,7 +873,7 @@
         const driveId = extractDriveId(item.imageUrl) || "";
         const initialSrc = (driveId && base64Cache[driveId]) ? base64Cache[driveId] : (candidates[0] || "");
         const thumb = (candidates.length > 0 || initialSrc)
-          ? `<img src="${initialSrc}" alt="${escapeHTML(item.name)}" referrerpolicy="no-referrer" crossorigin="anonymous" data-idx="0" data-drive-id="${driveId}" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
+          ? `<img src="${initialSrc}" alt="${escapeHTML(item.name)}" referrerpolicy="no-referrer" data-idx="0" data-drive-id="${driveId}" data-candidates="${candidatesAttr}" onerror="handleImageFallback(this)" class="w-10 h-10 object-contain mx-auto"/><div style="display:none" class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`
           : `<div class="w-10 h-10 mx-auto">${getMotifFallbackSVG(item)}</div>`;
         return `<button onclick="selectStudioMotif('${item.code}')" class="p-2 rounded-xl border-2 text-center transition flex flex-col items-center justify-between gap-1 ${selected ? "border-red-700 bg-red-50/50" : "border-stone-200 bg-white hover:border-stone-300"}">${thumb}<span class="text-[11px] font-extrabold text-stone-900">${item.code}</span><span class="text-[10px] text-stone-500 line-clamp-1 leading-tight">${item.name}</span></button>`;
       }).join("");
@@ -1131,7 +1131,7 @@
         return `${idx + 1}. *${item.code}* (${item.name}) - ${colorText} talla *${item.size}* (x${item.qty})${posText}${nameText} = *$${item.price * item.qty}*`;
       });
       const total = cart.reduce((acc, c) => acc + c.qty * c.price, 0);
-      const message = `¡Hola! Quiero hacer este pedido de Franelas Navideñas:\n\n${lines.join("\n")}\n\n *Total a pagar: $${total}*\n¿Me confirman disponibilidad y datos de pago?`;
+      const message = `🎄 ¡Hola! Quiero hacer este pedido de Franelas Navideñas:\n\n${lines.join("\n")}\n\n *Total a pagar: $${total}*\n¿Me confirman disponibilidad y datos de pago?`;
       window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     }
 
